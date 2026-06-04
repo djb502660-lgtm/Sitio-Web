@@ -52,8 +52,49 @@ function ce_csrf_field(): string
 
 function ce_csrf_verify(): bool
 {
-    return isset($_POST['csrf_token'], $_SESSION['csrf_token'])
-        && hash_equals($_SESSION['csrf_token'], (string) $_POST['csrf_token']);
+    return ce_csrf_verify_request();
+}
+
+function ce_csrf_verify_request(): bool
+{
+    $expected = $_SESSION['csrf_token'] ?? null;
+    if (! is_string($expected) || $expected === '') {
+        return false;
+    }
+
+    $submitted = $_POST['csrf_token'] ?? null;
+    if ($submitted === null && ! empty($_SERVER['HTTP_X_CSRF_TOKEN'])) {
+        $submitted = $_SERVER['HTTP_X_CSRF_TOKEN'];
+    }
+
+    return is_string($submitted) && hash_equals($expected, $submitted);
+}
+
+function ce_client_ip(): string
+{
+    $forwarded = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '';
+    if (is_string($forwarded) && $forwarded !== '') {
+        return trim(explode(',', $forwarded)[0]);
+    }
+
+    return (string) ($_SERVER['REMOTE_ADDR'] ?? '0.0.0.0');
+}
+
+/**
+ * @return bool true si la petición está permitida; false si superó el límite
+ */
+function ce_rate_limit(string $bucket, int $maxAttempts, int $windowSeconds): bool
+{
+    $key = 'rate_' . preg_replace('/[^a-zA-Z0-9:_-]/', '', $bucket);
+    $now = time();
+
+    if (! isset($_SESSION[$key]) || $now >= ($_SESSION[$key]['reset'] ?? 0)) {
+        $_SESSION[$key] = ['count' => 0, 'reset' => $now + $windowSeconds];
+    }
+
+    $_SESSION[$key]['count']++;
+
+    return $_SESSION[$key]['count'] <= $maxAttempts;
 }
 
 function auth_user(): ?array

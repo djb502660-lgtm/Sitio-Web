@@ -90,10 +90,14 @@ const CE = {
                     const id = btn.dataset.productId;
                     const url = btn.dataset.waUrl;
                     if (id && btn.dataset.logUrl) {
+                        const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
+                        const headers = { 'Content-Type': 'application/json' };
+                        if (csrf) headers['X-CSRF-TOKEN'] = csrf;
                         try {
                             await fetch(btn.dataset.logUrl, {
                                 method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
+                                headers,
+                                credentials: 'same-origin',
                                 body: JSON.stringify({ product_id: parseInt(id, 10) }),
                             });
                         } catch (_) { /* noop */ }

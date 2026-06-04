@@ -21,8 +21,15 @@ class AuthController
 
     public function login(): void
     {
-        if (!ce_csrf_verify()) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            ce_redirect('login');
+        }
+        if (! ce_csrf_verify()) {
             flash('error', 'Token inválido.');
+            ce_redirect('login');
+        }
+        if (! ce_rate_limit('login:' . ce_client_ip(), 5, 900)) {
+            flash('error', 'Demasiados intentos. Espera 15 minutos e inténtalo de nuevo.');
             ce_redirect('login');
         }
         $email = filter_var($_POST['email'] ?? '', FILTER_VALIDATE_EMAIL);
@@ -54,8 +61,15 @@ class AuthController
 
     public function register(): void
     {
-        if (!ce_csrf_verify()) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            ce_redirect('register');
+        }
+        if (! ce_csrf_verify()) {
             flash('error', 'Token inválido.');
+            ce_redirect('register');
+        }
+        if (! ce_rate_limit('register:' . ce_client_ip(), 5, 3600)) {
+            flash('error', 'Demasiados registros desde esta red. Inténtalo más tarde.');
             ce_redirect('register');
         }
         $fullName = sanitize_string((string) ($_POST['full_name'] ?? ''), 100);
@@ -81,6 +95,10 @@ class AuthController
 
     public function logout(): void
     {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || ! ce_csrf_verify()) {
+            flash('error', 'Solicitud inválida.');
+            ce_redirect(is_logged_in() ? (is_admin() ? 'admin' : 'perfil') : '');
+        }
         unset($_SESSION['user']);
         session_regenerate_id(true);
         flash('success', 'Sesión cerrada.');

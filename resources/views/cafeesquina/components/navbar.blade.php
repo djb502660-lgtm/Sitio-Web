@@ -27,7 +27,10 @@
                 <a href="{{ base_url('admin') }}" class="btn btn-outline btn-sm"><i class="fas fa-chart-line"></i> Admin</a>
             @endif
             @if(is_logged_in())
-                <a href="{{ base_url('logout') }}" class="btn btn-outline btn-sm">Salir</a>
+                <form method="post" action="{{ base_url('logout') }}" class="inline">
+                    {!! ce_csrf_field() !!}
+                    <button type="submit" class="btn btn-outline btn-sm">Salir</button>
+                </form>
             @else
                 <a href="{{ base_url('login') }}" class="btn btn-outline btn-sm">Entrar</a>
                 <a href="{{ base_url('register') }}" class="btn btn-primary btn-sm">Registro</a>

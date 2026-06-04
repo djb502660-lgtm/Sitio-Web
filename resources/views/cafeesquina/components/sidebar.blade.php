@@ -29,6 +29,11 @@
         <hr class="border-white/15 my-4">
         <a href="{{ base_url('') }}"><i class="fas fa-store w-5 text-center opacity-80"></i> Ver sitio</a>
         <a href="{{ base_url('perfil') }}"><i class="fas fa-cog w-5 text-center opacity-80"></i> Configuración</a>
-        <a href="{{ base_url('logout') }}"><i class="fas fa-sign-out-alt w-5 text-center opacity-80"></i> Cerrar sesión</a>
+        <form method="post" action="{{ base_url('logout') }}" class="block">
+            {!! ce_csrf_field() !!}
+            <button type="submit" class="w-full text-left flex items-center gap-2 hover:text-gold bg-transparent border-0 p-0 cursor-pointer text-inherit font-inherit">
+                <i class="fas fa-sign-out-alt w-5 text-center opacity-80"></i> Cerrar sesión
+            </button>
+        </form>
     </nav>
 </aside>

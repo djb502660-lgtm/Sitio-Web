@@ -14,6 +14,7 @@ class CafeesquinaSeeder extends Seeder
 
         if (DB::table('users')->where('email', 'admin@cafeesquina.local')->doesntExist()) {
             DB::table('users')->insert([
+                'name' => 'Administrador',
                 'username' => 'admin',
                 'email' => 'admin@cafeesquina.local',
                 'password' => $adminHash,

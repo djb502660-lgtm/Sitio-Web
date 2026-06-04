@@ -39,7 +39,18 @@ class ProductController
     {
         header('Content-Type: application/json');
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            echo json_encode(['ok' => false]);
+            http_response_code(405);
+            echo json_encode(['ok' => false, 'error' => 'method']);
+            exit;
+        }
+        if (! ce_csrf_verify_request()) {
+            http_response_code(403);
+            echo json_encode(['ok' => false, 'error' => 'csrf']);
+            exit;
+        }
+        if (! ce_rate_limit('log_order:' . ce_client_ip(), 30, 3600)) {
+            http_response_code(429);
+            echo json_encode(['ok' => false, 'error' => 'rate_limit']);
             exit;
         }
         $input = json_decode(file_get_contents('php://input'), true) ?? [];

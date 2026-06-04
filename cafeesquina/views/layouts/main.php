@@ -16,6 +16,7 @@ $canonical = 'http://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . base_url($_SER
     <meta property="og:url" content="<?= e($canonical) ?>">
     <meta property="og:image" content="<?= e(asset_url('images/og-cafe.svg')) ?>">
     <link rel="canonical" href="<?= e($canonical) ?>">
+    <meta name="csrf-token" content="<?= e(ce_csrf_token()) ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={theme:{extend:{colors:{coffee:{dark:'#3E2723',medium:'#5D4037',light:'#8D6E63'},cream:'#FFF8E1',gold:'#D4A373',accent:'#C97B63'}}}}</script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -46,7 +47,10 @@ $canonical = 'http://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . base_url($_SER
                 <a href="<?= e(base_url('pedidos')) ?>">Pedidos</a>
             <?php endif; ?>
             <?php if (is_logged_in()): ?>
-                <a href="<?= e(base_url('logout')) ?>" class="btn-outline text-xs px-3 py-1 border border-coffee-medium rounded-full">Salir</a>
+                <form method="post" action="<?= e(base_url('logout')) ?>" class="inline">
+                    <?= ce_csrf_field() ?>
+                    <button type="submit" class="btn-outline text-xs px-3 py-1 border border-coffee-medium rounded-full">Salir</button>
+                </form>
             <?php else: ?>
                 <a href="<?= e(base_url('login')) ?>">Entrar</a>
                 <a href="<?= e(base_url('register')) ?>" class="btn-primary text-xs px-4 py-2">Registro</a>

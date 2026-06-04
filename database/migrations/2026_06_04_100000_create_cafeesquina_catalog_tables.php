@@ -29,6 +29,10 @@ return new class extends Migration
                 $table->boolean('featured')->default(false);
                 $table->timestamp('created_at')->useCurrent();
             });
+        } elseif (! Schema::hasColumn('products', 'featured')) {
+            Schema::table('products', function (Blueprint $table) {
+                $table->boolean('featured')->default(false)->after('status');
+            });
         }
 
         if (! Schema::hasTable('promotions')) {

@@ -12,6 +12,7 @@
     <title>{{ $pageTitle }}</title>
     <meta name="description" content="{{ $metaDesc }}">
     <meta name="theme-color" content="#3d2314">
+    <meta name="csrf-token" content="{{ ce_csrf_token() }}">
     <link rel="canonical" href="{{ $canonical }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset_url('css/cafeesquina.css') }}?v=3">

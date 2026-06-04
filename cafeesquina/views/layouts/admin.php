@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($pageTitle) ?> | Admin CAFEESQUINA</title>
+    <meta name="csrf-token" content="<?= e(ce_csrf_token()) ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="<?= e(asset_url('css/cafeesquina.css')) ?>">
@@ -21,7 +22,10 @@
         <a href="<?= e(base_url('admin/usuarios')) ?>" class="block py-2 hover:text-gold"><i class="fas fa-users"></i> Usuarios</a>
         <hr class="border-cream/20 my-4">
         <a href="<?= e(base_url('')) ?>" class="block py-2 hover:text-gold"><i class="fas fa-store"></i> Ver sitio</a>
-        <a href="<?= e(base_url('logout')) ?>" class="block py-2 hover:text-gold"><i class="fas fa-sign-out-alt"></i> Salir</a>
+        <form method="post" action="<?= e(base_url('logout')) ?>" class="block">
+            <?= ce_csrf_field() ?>
+            <button type="submit" class="block py-2 hover:text-gold w-full text-left bg-transparent border-0 cursor-pointer text-inherit font-inherit"><i class="fas fa-sign-out-alt"></i> Salir</button>
+        </form>
     </nav>
 </aside>
 <div class="flex-1 flex flex-col min-w-0">
