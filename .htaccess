@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /Sitio-Web/
+
+    # uploads: carpeta física o enlace simbólico en la raíz del proyecto
+    RewriteRule ^uploads/(.*)$ cafeesquina/uploads/$1 [L]
+
+    # Archivos públicos reales (incluye /assets vía junction a cafeesquina/assets)
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Todo al front controller unificado
+    RewriteRule ^ index.php [L]
+</IfModule>

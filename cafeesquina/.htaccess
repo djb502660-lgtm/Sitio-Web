@@ -1,0 +1,5 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Unificar URLs: /Sitio-Web/cafeesquina/* → /Sitio-Web/*
+    RewriteRule ^(.*)$ /Sitio-Web/$1 [R=301,L]
+</IfModule>
