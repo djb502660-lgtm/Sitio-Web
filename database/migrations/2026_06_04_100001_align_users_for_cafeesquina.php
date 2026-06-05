@@ -9,13 +9,22 @@ return new class extends Migration
     public function up(): void
     {
         if (! Schema::hasTable('users')) {
-            Schema::create('users', function (Blueprint $table) {
-                $this->cafeesquinaUserColumns($table);
+            return;
+        }
+
+        // Tabla legacy de Laravel (name) sin columnas CAFEESQUINA
+        if (Schema::hasColumn('users', 'name') && ! Schema::hasColumn('users', 'username')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('username', 50)->nullable()->unique()->after('id');
+                $table->string('full_name', 100)->nullable();
+                $table->string('phone', 20)->nullable();
+                $table->enum('role', ['client', 'admin'])->default('client');
             });
 
             return;
         }
 
+        // Instalaciones antiguas: añadir columnas que falten
         Schema::table('users', function (Blueprint $table) {
             if (! Schema::hasColumn('users', 'username')) {
                 $table->string('username', 50)->nullable()->unique()->after('id');
@@ -35,18 +44,5 @@ return new class extends Migration
     public function down(): void
     {
         // No revertir en producción para evitar pérdida de datos
-    }
-
-    private function cafeesquinaUserColumns(Blueprint $table): void
-    {
-        $table->id();
-        $table->string('username', 50)->unique();
-        $table->string('email', 100)->unique();
-        $table->string('password');
-        $table->string('full_name', 100)->nullable();
-        $table->string('phone', 20)->nullable();
-        $table->enum('role', ['client', 'admin'])->default('client');
-        $table->rememberToken()->nullable();
-        $table->timestamps();
     }
 };
