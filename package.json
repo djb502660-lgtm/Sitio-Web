@@ -4,6 +4,7 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
+        "build:netlify": "vite build && cp netlify/index.html public/index.html",
         "dev": "vite"
     },
     "devDependencies": {

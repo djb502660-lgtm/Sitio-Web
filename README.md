@@ -20,7 +20,7 @@ php artisan migrate --seed
 php artisan test --filter=Cafeesquina
 ```
 
-Detalle: [`docs/ESTRUCTURA-PROYECTO.md`](docs/ESTRUCTURA-PROYECTO.md) · Instalación: [`cafeesquina/INSTALL.md`](cafeesquina/INSTALL.md)
+Detalle: [`docs/ESTRUCTURA-PROYECTO.md`](docs/ESTRUCTURA-PROYECTO.md) · Instalación: [`cafeesquina/INSTALL.md`](cafeesquina/INSTALL.md) · Producción: [`docs/DESPLIEGUE.md`](docs/DESPLIEGUE.md)
 
 ## Requisitos
 

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAFEESQUINA — Vista previa de assets</title>
+    <meta name="description" content="CAFEESQUINA requiere hosting PHP. Esta URL en Netlify solo publica los assets estáticos del build.">
+    <meta name="theme-color" content="#3d2314">
+    <style>
+        :root {
+            --font-sans: "Inter", system-ui, sans-serif;
+            --font-display: "Playfair Display", Georgia, serif;
+            --bg: #f7f3ee;
+            --surface: #ffffff;
+            --text: #1a120e;
+            --muted: #6b5f57;
+            --border: #e8e0d8;
+            --brand: #3d2314;
+            --gold: #b8864a;
+            --gold-soft: #f5ebe0;
+            --radius-lg: 20px;
+            --shadow: 0 4px 24px rgba(26, 18, 14, .08);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
+        code { font-size: 0.9em; background: var(--gold-soft); padding: 0.1rem 0.35rem; border-radius: 4px; }
+        .notice { flex: 1; display: flex; align-items: center; padding: 3rem 0; }
+        .notice-card {
+            max-width: 640px;
+            margin: 0 auto;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+        }
+        .notice-card h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 4vw, 2.25rem);
+            font-weight: 700;
+            color: var(--text);
+        }
+        .notice-card p { color: var(--muted); margin-top: 1rem; line-height: 1.7; }
+        .notice-card ul { margin: 1.25rem 0 0 1.25rem; color: var(--muted); }
+        .notice-card li { margin-top: 0.5rem; }
+        .notice-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+        .badge {
+            display: inline-block;
+            margin-top: 1.25rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 999px;
+            background: var(--gold-soft);
+            color: var(--brand);
+            font-size: 0.8125rem;
+            font-weight: 600;
+        }
+        .site-footer { margin-top: 0; background: var(--brand); color: #fff; }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; }
+        .site-nav {
+            height: 72px;
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,.92);
+            border-bottom: 1px solid var(--border);
+        }
+        .brand { display: flex; align-items: center; gap: .65rem; font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; }
+        .brand__icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            background: var(--brand); color: #fff;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: .7rem 1.35rem; border-radius: 999px;
+            font-size: .9375rem; font-weight: 600; text-decoration: none;
+        }
+        .btn-primary { background: var(--brand); color: #fff; }
+        .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+        .site-footer__bottom { padding: 1.25rem 0; text-align: center; font-size: .8125rem; opacity: .85; }
+    </style>
+</head>
+<body>
+    <header class="site-nav">
+        <div class="container site-nav__inner">
+            <div class="brand">
+                <span class="brand__icon" aria-hidden="true">☕</span>
+                <span>CAFEESQUINA</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="notice">
+        <div class="container">
+            <article class="notice-card">
+                <span class="badge">Netlify — solo assets estáticos</span>
+                <h1>La aplicación completa no corre aquí</h1>
+                <p>
+                    Este sitio en Netlify publica únicamente los archivos generados por Vite
+                    (<code>public/build/</code>). CAFEESQUINA es una aplicación <strong>Laravel + PHP + MySQL</strong>
+                    y necesita un servidor con soporte PHP para menú, login, administración y base de datos.
+                </p>
+                <ul>
+                    <li>Para desarrollo local: <code>http://localhost/Sitio-Web/</code></li>
+                    <li>Para producción: hosting con PHP 8.2+, MySQL y document root en <code>public/</code></li>
+                    <li>Guía completa: <code>docs/DESPLIEGUE.md</code> en el repositorio</li>
+                </ul>
+                <div class="notice-actions">
+                    <a class="btn btn-primary" href="https://github.com/djb502660-lgtm/Sitio-Web" rel="noopener">
+                        Ver repositorio
+                    </a>
+                    <a class="btn btn-outline" href="/build/manifest.json">
+                        Manifest del build
+                    </a>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container site-footer__bottom">
+            CAFEESQUINA — Cada taza cuenta una historia
+        </div>
+    </footer>
+</body>
+</html>
