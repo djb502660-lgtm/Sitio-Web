@@ -1,5 +1,7 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    # Archivos estáticos: no redirigir (evita bucle 301 con /uploads/ en la raíz)
+    RewriteRule ^(uploads|assets)/ - [L]
     # Unificar URLs: /Sitio-Web/cafeesquina/* → /Sitio-Web/*
     RewriteRule ^(.*)$ /Sitio-Web/$1 [R=301,L]
 </IfModule>

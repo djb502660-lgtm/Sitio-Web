@@ -75,14 +75,14 @@ INSERT INTO categories (name, description) VALUES
 ON DUPLICATE KEY UPDATE name = VALUES(name);
 
 INSERT INTO products (category_id, name, description, price, image, status, featured) VALUES
-(1, 'Espresso Esquina', 'Shot intenso de café artesanal.', 2.50, 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600', 'available', 1),
-(1, 'Capuchino Vainilla', 'Espuma sedosa con toque de vainilla.', 3.75, 'https://images.unsplash.com/photo-1572442388796-11668a67e3d9?w=600', 'available', 1),
-(2, 'Iced Caramel Latte', 'Latte frío con caramelo.', 4.25, 'https://images.unsplash.com/photo-1517701604599-b8c035bafa0e?w=600', 'available', 1),
-(3, 'Frappé Moka', 'Chocolate y café batido.', 4.99, 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=600', 'available', 0),
-(6, 'Cheesecake Maracuyá', 'Cremoso con coulis tropical.', 3.99, 'https://images.unsplash.com/photo-1524351199678-941a58a4df50?w=600', 'available', 1),
-(9, 'Desayuno Esquina', 'Café + croissant + jugo.', 6.50, 'https://images.unsplash.com/photo-1533089860903-50726b201f0c?w=600', 'available', 1),
-(10, 'Affogato Especial', 'Helado de vainilla con espresso caliente.', 5.25, 'https://images.unsplash.com/photo-1559496417-4139a8a0f254?w=600', 'available', 1);
+(1, 'Espresso Esquina', 'Shot intenso de café artesanal.', 2.50, 'uploads/products/espresso.png', 'available', 1),
+(1, 'Capuchino Vainilla', 'Espuma sedosa con toque de vainilla.', 3.75, 'uploads/products/capuchino.png', 'available', 1),
+(2, 'Iced Caramel Latte', 'Latte frío con caramelo.', 4.25, 'uploads/products/latte.png', 'available', 1),
+(3, 'Frappé Moka', 'Chocolate y café batido.', 4.99, 'uploads/products/frappe.png', 'available', 0),
+(6, 'Cheesecake Maracuyá', 'Cremoso con coulis tropical.', 3.99, 'uploads/products/cheesecake.png', 'available', 1),
+(9, 'Desayuno Esquina', 'Café + croissant + jugo.', 6.50, 'uploads/products/desayuno.png', 'available', 1),
+(10, 'Affogato Especial', 'Helado de vainilla con espresso caliente.', 5.25, 'uploads/products/affogato.png', 'available', 1);
 
 INSERT INTO promotions (title, description, image, start_date, end_date, active) VALUES
-('Combo Mañanero', 'Café mediano + pastel por $5.99', 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 30 DAY), 1),
-('2x1 Frappés', 'Viernes de frappés: lleva 2 y paga 1', 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 14 DAY), 1);
+('Combo Mañanero', 'Café mediano + pastel por $5.99', 'uploads/products/desayuno.png', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 30 DAY), 1),
+('2x1 Frappés', 'Viernes de frappés: lleva 2 y paga 1', 'uploads/products/frappe.png', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 14 DAY), 1);

@@ -2,8 +2,8 @@
     RewriteEngine On
     RewriteBase /Sitio-Web/
 
-    # uploads: carpeta física o enlace simbólico en la raíz del proyecto
-    RewriteRule ^uploads/(.*)$ cafeesquina/uploads/$1 [L]
+    # uploads: servir desde cafeesquina/uploads (END evita bucles con .htaccess internos)
+    RewriteRule ^uploads/(.*)$ cafeesquina/uploads/$1 [L,END]
 
     # Archivos públicos reales (incluye /assets vía junction a cafeesquina/assets)
     RewriteCond %{REQUEST_FILENAME} -f [OR]

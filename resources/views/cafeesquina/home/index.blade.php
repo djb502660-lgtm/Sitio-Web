@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-    $heroImg = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1600&q=85';
+    $heroImg = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1600" height="600"%3E%3Cdefs%3E%3ClinearGradient id="grad" x1="0%25" y1="0%25" x2="100%25" y2="100%25"%3E%3Cstop offset="0%25" style="stop-color:%236D4C41;stop-opacity:1" /%3E%3Cstop offset="100%25" style="stop-color:%238D6E63;stop-opacity:1" /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill="url(%23grad)" width="1600" height="600"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="system-ui" font-size="64" font-weight="bold" fill="white"%3ECAFEESQUINA%3C/text%3E%3C/svg%3E';
     $waNum = preg_replace('/\D/', '', (string) config('cafeesquina.whatsapp_number'));
     $waGeneral = 'https://wa.me/' . $waNum . '?text=' . rawurlencode('Hola, quiero comprar este producto');
     $catIcons = ['fa-mug-hot', 'fa-cookie-bite', 'fa-glass-water', 'fa-bread-slice', 'fa-ice-cream', 'fa-leaf'];
@@ -75,7 +75,7 @@
         <div class="grid grid-2">
             @forelse($promotions as $promo)
             <article class="promo-card">
-                <img src="{{ $promo['image'] }}" alt="" class="promo-card__img" loading="lazy">
+                <img src="{{ media_url($promo['image'] ?? null) }}" alt="" class="promo-card__img" loading="lazy">
                 <div class="promo-card__body">
                     <h3 class="font-display" style="font-size:1.25rem;font-weight:700">{{ $promo['title'] }}</h3>
                     <p class="text-muted text-sm mt-2">{{ $promo['description'] }}</p>
