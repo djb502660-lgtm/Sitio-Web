@@ -10,10 +10,37 @@ if (! function_exists('e')) {
     }
 }
 
+/**
+ * Ruta base real según el entorno (raíz con artisan serve, /Sitio-Web con Laragon/XAMPP).
+ */
+function ce_app_base_path(): string
+{
+    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '/index.php';
+    $base = dirname($scriptName);
+
+    // Windows: dirname('/index.php') puede devolver '\' en vez de '/'
+    if ($base === '\\' || $base === '.') {
+        $base = '';
+    }
+
+    $base = str_replace('\\', '/', (string) $base);
+
+    if ($base === '/' || $base === '') {
+        return '';
+    }
+
+    return rtrim($base, '/');
+}
+
 function base_url(string $path = ''): string
 {
-    $base = rtrim((string) app_config('base_url'), '/');
-    return $base . ($path !== '' ? '/' . ltrim($path, '/') : '');
+    $base = ce_app_base_path();
+
+    if ($path === '') {
+        return $base !== '' ? $base : '/';
+    }
+
+    return ($base !== '' ? $base : '') . '/' . ltrim($path, '/');
 }
 
 function ce_redirect(string $path): never
