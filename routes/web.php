@@ -32,7 +32,9 @@ Route::get('/uploads/{path}', function (string $path): BinaryFileResponse {
     $file = base_path('cafeesquina/uploads/' . $path);
     abort_unless(is_file($file), 404);
 
-    return response()->file($file);
+    return response()->file($file, [
+        'Content-Type' => mime_content_type($file) ?: 'application/octet-stream',
+    ]);
 })->where('path', '.*')->withoutMiddleware([
     StartSession::class,
     ShareErrorsFromSession::class,

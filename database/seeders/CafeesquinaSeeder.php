@@ -48,13 +48,13 @@ class CafeesquinaSeeder extends Seeder
             $cat = fn (string $n) => (int) DB::table('categories')->where('name', $n)->value('id');
 
             DB::table('products')->insert([
-                ['category_id' => $cat('Cafés calientes'), 'name' => 'Espresso Esquina', 'description' => 'Shot intenso de café artesanal.', 'price' => 2.50, 'image' => 'uploads/products/espresso.png', 'status' => 'available', 'featured' => 1],
-                ['category_id' => $cat('Cafés calientes'), 'name' => 'Capuchino Vainilla', 'description' => 'Espuma sedosa con toque de vainilla.', 'price' => 3.75, 'image' => 'uploads/products/capuchino.png', 'status' => 'available', 'featured' => 1],
-                ['category_id' => $cat('Cafés fríos'), 'name' => 'Iced Caramel Latte', 'description' => 'Latte frío con caramelo.', 'price' => 4.25, 'image' => 'uploads/products/latte.png', 'status' => 'available', 'featured' => 1],
-                ['category_id' => $cat('Frappés'), 'name' => 'Frappé Moka', 'description' => 'Chocolate y café batido.', 'price' => 4.99, 'image' => 'uploads/products/frappe.png', 'status' => 'available', 'featured' => 0],
-                ['category_id' => $cat('Postres'), 'name' => 'Cheesecake Maracuyá', 'description' => 'Cremoso con coulis tropical.', 'price' => 3.99, 'image' => 'uploads/products/cheesecake.png', 'status' => 'available', 'featured' => 1],
-                ['category_id' => $cat('Desayunos'), 'name' => 'Desayuno Esquina', 'description' => 'Café + croissant + jugo.', 'price' => 6.50, 'image' => 'uploads/products/desayuno.png', 'status' => 'available', 'featured' => 1],
-                ['category_id' => $cat('Especialidades de la casa'), 'name' => 'Affogato Especial', 'description' => 'Helado de vainilla con espresso caliente.', 'price' => 5.25, 'image' => 'uploads/products/affogato.png', 'status' => 'available', 'featured' => 1],
+                ['category_id' => $cat('Cafés calientes'), 'name' => 'Espresso Esquina', 'description' => 'Shot intenso de café artesanal.', 'price' => 2.50, 'image' => 'uploads/products/espresso.jpg', 'status' => 'available', 'featured' => 1],
+                ['category_id' => $cat('Cafés calientes'), 'name' => 'Capuchino Vainilla', 'description' => 'Espuma sedosa con toque de vainilla.', 'price' => 3.75, 'image' => 'uploads/products/capuchino.jpg', 'status' => 'available', 'featured' => 1],
+                ['category_id' => $cat('Cafés fríos'), 'name' => 'Iced Caramel Latte', 'description' => 'Latte frío con caramelo.', 'price' => 4.25, 'image' => 'uploads/products/latte.jpg', 'status' => 'available', 'featured' => 1],
+                ['category_id' => $cat('Frappés'), 'name' => 'Frappé Moka', 'description' => 'Chocolate y café batido.', 'price' => 4.99, 'image' => 'uploads/products/frappe.jpg', 'status' => 'available', 'featured' => 0],
+                ['category_id' => $cat('Postres'), 'name' => 'Cheesecake Maracuyá', 'description' => 'Cremoso con coulis tropical.', 'price' => 3.99, 'image' => 'uploads/products/cheesecake.jpg', 'status' => 'available', 'featured' => 1],
+                ['category_id' => $cat('Desayunos'), 'name' => 'Desayuno Esquina', 'description' => 'Café + croissant + jugo.', 'price' => 6.50, 'image' => 'uploads/products/desayuno.jpg', 'status' => 'available', 'featured' => 1],
+                ['category_id' => $cat('Especialidades de la casa'), 'name' => 'Affogato Especial', 'description' => 'Helado de vainilla con espresso caliente.', 'price' => 5.25, 'image' => 'uploads/products/affogato.jpg', 'status' => 'available', 'featured' => 1],
             ]);
         }
 
@@ -63,7 +63,7 @@ class CafeesquinaSeeder extends Seeder
                 [
                     'title' => 'Combo Mañanero',
                     'description' => 'Café mediano + pastel por $5.99',
-                    'image' => 'uploads/products/desayuno.png',
+                    'image' => 'uploads/products/desayuno.jpg',
                     'start_date' => now()->toDateString(),
                     'end_date' => now()->addDays(30)->toDateString(),
                     'active' => 1,
@@ -71,7 +71,7 @@ class CafeesquinaSeeder extends Seeder
                 [
                     'title' => '2x1 Frappés',
                     'description' => 'Viernes de frappés: lleva 2 y paga 1',
-                    'image' => 'uploads/products/frappe.png',
+                    'image' => 'uploads/products/frappe.jpg',
                     'start_date' => now()->toDateString(),
                     'end_date' => now()->addDays(14)->toDateString(),
                     'active' => 1,

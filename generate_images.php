@@ -10,13 +10,13 @@ if (! is_dir($uploadDir)) {
 }
 
 $sources = [
-    'espresso.png' => 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80',
-    'capuchino.png' => 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=80',
-    'latte.png' => 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80',
-    'frappe.png' => 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=800&q=80',
-    'cheesecake.png' => 'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=800&q=80',
-    'desayuno.png' => 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80',
-    'affogato.png' => 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800&q=80',
+    'espresso.jpg' => 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80',
+    'capuchino.jpg' => 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=80',
+    'latte.jpg' => 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80',
+    'frappe.jpg' => 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=800&q=80',
+    'cheesecake.jpg' => 'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=800&q=80',
+    'desayuno.jpg' => 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80',
+    'affogato.jpg' => 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800&q=80',
 ];
 
 $context = stream_context_create([

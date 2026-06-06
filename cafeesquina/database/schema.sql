@@ -75,14 +75,14 @@ INSERT INTO categories (name, description) VALUES
 ON DUPLICATE KEY UPDATE name = VALUES(name);
 
 INSERT INTO products (category_id, name, description, price, image, status, featured) VALUES
-(1, 'Espresso Esquina', 'Shot intenso de café artesanal.', 2.50, 'uploads/products/espresso.png', 'available', 1),
-(1, 'Capuchino Vainilla', 'Espuma sedosa con toque de vainilla.', 3.75, 'uploads/products/capuchino.png', 'available', 1),
-(2, 'Iced Caramel Latte', 'Latte frío con caramelo.', 4.25, 'uploads/products/latte.png', 'available', 1),
-(3, 'Frappé Moka', 'Chocolate y café batido.', 4.99, 'uploads/products/frappe.png', 'available', 0),
-(6, 'Cheesecake Maracuyá', 'Cremoso con coulis tropical.', 3.99, 'uploads/products/cheesecake.png', 'available', 1),
-(9, 'Desayuno Esquina', 'Café + croissant + jugo.', 6.50, 'uploads/products/desayuno.png', 'available', 1),
-(10, 'Affogato Especial', 'Helado de vainilla con espresso caliente.', 5.25, 'uploads/products/affogato.png', 'available', 1);
+(1, 'Espresso Esquina', 'Shot intenso de café artesanal.', 2.50, 'uploads/products/espresso.jpg', 'available', 1),
+(1, 'Capuchino Vainilla', 'Espuma sedosa con toque de vainilla.', 3.75, 'uploads/products/capuchino.jpg', 'available', 1),
+(2, 'Iced Caramel Latte', 'Latte frío con caramelo.', 4.25, 'uploads/products/latte.jpg', 'available', 1),
+(3, 'Frappé Moka', 'Chocolate y café batido.', 4.99, 'uploads/products/frappe.jpg', 'available', 0),
+(6, 'Cheesecake Maracuyá', 'Cremoso con coulis tropical.', 3.99, 'uploads/products/cheesecake.jpg', 'available', 1),
+(9, 'Desayuno Esquina', 'Café + croissant + jugo.', 6.50, 'uploads/products/desayuno.jpg', 'available', 1),
+(10, 'Affogato Especial', 'Helado de vainilla con espresso caliente.', 5.25, 'uploads/products/affogato.jpg', 'available', 1);
 
 INSERT INTO promotions (title, description, image, start_date, end_date, active) VALUES
-('Combo Mañanero', 'Café mediano + pastel por $5.99', 'uploads/products/desayuno.png', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 30 DAY), 1),
-('2x1 Frappés', 'Viernes de frappés: lleva 2 y paga 1', 'uploads/products/frappe.png', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 14 DAY), 1);
+('Combo Mañanero', 'Café mediano + pastel por $5.99', 'uploads/products/desayuno.jpg', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 30 DAY), 1),
+('2x1 Frappés', 'Viernes de frappés: lleva 2 y paga 1', 'uploads/products/frappe.jpg', CURDATE(), DATE_ADD(CURDATE(), INTERVAL 14 DAY), 1);
