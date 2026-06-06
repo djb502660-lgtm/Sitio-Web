@@ -196,3 +196,21 @@ function upload_url(string $path): string
 {
     return base_url('uploads/' . ltrim($path, '/'));
 }
+
+function media_url(?string $path, ?string $fallback = null): string
+{
+    if ($path === null || $path === '') {
+        return $fallback ?? '';
+    }
+
+    if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://') || str_starts_with($path, 'data:')) {
+        return $path;
+    }
+
+    $base = rtrim((string) app_config('base_url'), '/');
+    if ($base !== '' && (str_starts_with($path, $base . '/') || $path === $base)) {
+        return $path;
+    }
+
+    return base_url(ltrim($path, '/'));
+}

@@ -75,7 +75,7 @@
         <div class="grid grid-2">
             @forelse($promotions as $promo)
             <article class="promo-card">
-                <img src="{{ $promo['image'] }}" alt="" class="promo-card__img" loading="lazy">
+                <img src="{{ media_url($promo['image'] ?? null) }}" alt="" class="promo-card__img" loading="lazy">
                 <div class="promo-card__body">
                     <h3 class="font-display" style="font-size:1.25rem;font-weight:700">{{ $promo['title'] }}</h3>
                     <p class="text-muted text-sm mt-2">{{ $promo['description'] }}</p>

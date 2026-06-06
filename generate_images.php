@@ -1,73 +1,41 @@
 <?php
 /**
- * Generador de imágenes placeholder para productos
- * Crea archivos PNG reales que se pueden servir sin restricciones CORS/ORB
+ * Descarga fotos de productos a cafeesquina/uploads/products/
+ * Ejecutar: php generate_images.php
  */
 
 $uploadDir = __DIR__ . '/cafeesquina/uploads/products';
-if (!is_dir($uploadDir)) {
+if (! is_dir($uploadDir)) {
     mkdir($uploadDir, 0755, true);
 }
 
-$colors = [
-    '#8B6F47', // Café marrón
-    '#6D4C41', // Marrón oscuro
-    '#A1887F', // Marrón claro
-    '#4E342E', // Marrón muy oscuro
-    '#795548', // Marrón medio
-    '#9E8B80', // Marrón grisáceo
-    '#5D4037', // Marrón principal
+$sources = [
+    'espresso.png' => 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80',
+    'capuchino.png' => 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=80',
+    'latte.png' => 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80',
+    'frappe.png' => 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=800&q=80',
+    'cheesecake.png' => 'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=800&q=80',
+    'desayuno.png' => 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80',
+    'affogato.png' => 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800&q=80',
 ];
 
-$products = [
-    'espresso' => ['Espresso', '#8B6F47'],
-    'capuchino' => ['Capuchino', '#6D4C41'],
-    'latte' => ['Latte', '#A1887F'],
-    'frappe' => ['Frappé', '#4E342E'],
-    'cheesecake' => ['Postre', '#795548'],
-    'desayuno' => ['Desayuno', '#9E8B80'],
-    'affogato' => ['Affogato', '#5D4037'],
-];
+$context = stream_context_create([
+    'http' => [
+        'header' => "User-Agent: CAFEESQUINA/1.0\r\n",
+        'timeout' => 30,
+    ],
+]);
 
-foreach ($products as $filename => $data) {
-    [$label, $color] = $data;
-    
-    // Crear imagen PNG usando GD
-    $width = 600;
-    $height = 400;
-    $image = imagecreatetruecolor($width, $height);
-    
-    // Convertir color hex a RGB
-    $rgb = hexToRgb($color);
-    $bgColor = imagecolorallocate($image, $rgb[0], $rgb[1], $rgb[2]);
-    imagefill($image, 0, 0, $bgColor);
-    
-    // Agregar texto
-    $textColor = imagecolorallocate($image, 255, 255, 255);
-    $fontFile = __DIR__ . '/cafeesquina/assets/fonts/arial.ttf';
-    
-    // Si no existe fuente TTF, usar texto plano
-    if (!file_exists($fontFile)) {
-        imagestring($image, 5, 250, 190, $label, $textColor);
-    } else {
-        imagettftext($image, 40, 0, 150, 220, $textColor, $fontFile, $label);
+foreach ($sources as $filename => $url) {
+    $data = @file_get_contents($url, false, $context);
+    if ($data === false || strlen($data) < 1024) {
+        echo "✗ Error descargando: $filename\n";
+        continue;
     }
-    
-    // Guardar como PNG
-    $filepath = $uploadDir . '/' . $filename . '.png';
-    imagepng($image, $filepath, 9);
-    imagedestroy($image);
-    
-    echo "✓ Creado: $filepath\n";
+
+    $path = $uploadDir . '/' . $filename;
+    file_put_contents($path, $data);
+    echo '✓ ' . $filename . ' (' . number_format(strlen($data)) . " bytes)\n";
 }
 
-echo "\n✅ Imágenes placeholder generadas exitosamente.\n";
-
-function hexToRgb($hex) {
-    $hex = ltrim($hex, '#');
-    return [
-        hexdec(substr($hex, 0, 2)),
-        hexdec(substr($hex, 2, 2)),
-        hexdec(substr($hex, 4, 2)),
-    ];
-}
+echo "\n✅ Imágenes de productos listas.\n";
