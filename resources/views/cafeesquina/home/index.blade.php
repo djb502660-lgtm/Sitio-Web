@@ -94,9 +94,9 @@
         @include('cafeesquina.components.section-heading', ['title' => 'Clientes felices', 'subtitle' => ''])
         <div class="grid grid-3">
             @foreach([
-                ['María G.', 'El mejor capuchino de la ciudad.'],
+                ['María G.', 'El Mejor Capuchino de la Ciudad.'],
                 ['Carlos R.', 'Pido por WhatsApp y llega rapidísimo.'],
-                ['Ana P.', 'Ambiente perfecto para trabajar.'],
+                ['Ana P.', 'Ambiente Perfecto para Trabajar.'],
             ] as $t)
             <blockquote class="quote-card">
                 <div class="quote-card__stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>

@@ -378,8 +378,8 @@ a { color: inherit; text-decoration: none; }
     text-transform: uppercase;
     letter-spacing: 0.04em;
 }
-.product-card__badge--ok { background: #dcfce7; color: #166534; }
-.product-card__badge--no { background: #fee2e2; color: #991b1b; }
+.product-card__badge--ok { background: #d2f8df; color: #1a6637; }
+.product-card__badge--no { background: #f8dada; color: #a02121; }
 .product-card__body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
 .product-card__cat {
     font-size: 0.6875rem;
