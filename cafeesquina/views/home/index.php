@@ -71,7 +71,7 @@ $waGeneral = 'https://wa.me/' . preg_replace('/\D/', '', (string) app_config('wh
         <div class="grid md:grid-cols-2 gap-8 mt-10">
             <?php foreach ($promotions as $promo): ?>
             <div class="card-cafe text-coffee-dark overflow-hidden flex flex-col md:flex-row">
-                <img src="<?= e($promo['image']) ?>" alt="" class="md:w-1/2 h-48 object-cover">
+                <img src="<?= e(media_url($promo['image'] ?? null)) ?>" alt="" class="md:w-1/2 h-48 object-cover">
                 <div class="p-6">
                     <h3 class="font-bold text-lg"><?= e($promo['title']) ?></h3>
                     <p class="text-sm mt-2"><?= e($promo['description']) ?></p>

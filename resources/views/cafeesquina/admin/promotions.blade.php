@@ -7,7 +7,7 @@
 <div class="grid grid-2">
 @foreach($promotions as $p)
 <article class="panel flex gap-4" style="padding:1rem">
-    <img src="{{ $p['image'] }}" alt="" style="width:80px;height:80px;object-fit:cover;border-radius:10px">
+    <img src="{{ media_url($p['image'] ?? null) }}" alt="" style="width:80px;height:80px;object-fit:cover;border-radius:10px">
     <div class="flex-1">
         <h3 style="font-weight:700">{{ $p['title'] }}</h3>
         <p class="text-sm text-muted mt-1">{{ $p['description'] }}</p>

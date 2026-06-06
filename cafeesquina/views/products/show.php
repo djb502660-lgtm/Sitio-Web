@@ -1,7 +1,7 @@
 <?php $wa = whatsapp_order_url($product['name'], (float)$product['price']); ?>
 <section class="py-12">
     <div class="max-w-4xl mx-auto px-4 grid md:grid-cols-2 gap-10">
-        <img src="<?= e($product['image']) ?>" alt="<?= e($product['name']) ?>" class="rounded-2xl shadow-xl w-full object-cover">
+        <img src="<?= e(media_url($product['image'] ?? null)) ?>" alt="<?= e($product['name']) ?>" class="rounded-2xl shadow-xl w-full object-cover">
         <div>
             <span class="text-gold text-sm font-semibold uppercase"><?= e($product['category_name']) ?></span>
             <h1 class="text-3xl font-bold mt-2"><?= e($product['name']) ?></h1>

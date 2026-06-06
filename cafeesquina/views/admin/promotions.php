@@ -3,7 +3,7 @@
 <div class="grid md:grid-cols-2 gap-4 mt-6">
 <?php foreach ($promotions as $p): ?>
 <div class="bg-white rounded-xl shadow p-4 flex gap-4">
-<img src="<?= e($p['image']) ?>" class="w-24 h-24 object-cover rounded-lg">
+<img src="<?= e(media_url($p['image'] ?? null)) ?>" class="w-24 h-24 object-cover rounded-lg">
 <div class="flex-1"><h3 class="font-bold"><?= e($p['title']) ?></h3><p class="text-sm text-gray-600"><?= e($p['description']) ?></p>
 <p class="text-xs mt-1"><?= e($p['start_date']) ?> — <?= e($p['end_date']) ?></p>
 <div class="mt-2"><button class="text-gold text-sm" onclick='editPromo(<?= json_encode($p, JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP) ?>)'>Editar</button>

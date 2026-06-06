@@ -31,4 +31,4 @@ $pdo->prepare('UPDATE users SET email=?, password=?, role=? WHERE username=?')->
 
 echo "[OK] Tablas y datos iniciales listos.\n";
 echo "Admin: admin@cafeesquina.local / Admin123!\n";
-echo "URL: http://localhost/Sitio-Web/cafeesquina/\n";
+echo "URL: http://localhost/Sitio-Web/\n";

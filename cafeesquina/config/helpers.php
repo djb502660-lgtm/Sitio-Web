@@ -197,6 +197,27 @@ function upload_url(string $path): string
     return base_url('uploads/' . ltrim($path, '/'));
 }
 
+/** Ruta relativa para guardar en BD (uploads/...) o URL externa intacta. */
+function normalize_image_path(?string $path): ?string
+{
+    if ($path === null || trim($path) === '') {
+        return null;
+    }
+
+    $path = trim($path);
+
+    if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://') || str_starts_with($path, 'data:')) {
+        return $path;
+    }
+
+    $base = rtrim((string) app_config('base_url'), '/');
+    if ($base !== '' && str_starts_with($path, $base . '/')) {
+        $path = substr($path, strlen($base) + 1);
+    }
+
+    return ltrim($path, '/');
+}
+
 function media_url(?string $path, ?string $fallback = null): string
 {
     if ($path === null || $path === '') {

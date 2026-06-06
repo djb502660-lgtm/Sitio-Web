@@ -1,7 +1,7 @@
 <?php
 /** @var array $product */
 $wa = whatsapp_order_url($product['name'], (float) $product['price']);
-$img = $product['image'] ?? asset_url('images/placeholder.jpg');
+$img = media_url($product['image'] ?? null, asset_url('images/placeholder.jpg'));
 ?>
 <article class="card-cafe flex flex-col reveal">
     <img src="<?= e($img) ?>" alt="<?= e($product['name']) ?>" class="h-48 w-full object-cover" loading="lazy">

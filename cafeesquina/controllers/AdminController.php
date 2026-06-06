@@ -233,6 +233,7 @@ class AdminController
         $status = ($post['status'] ?? '') === 'unavailable' ? 'unavailable' : 'available';
         $featured = !empty($post['featured']) ? 1 : 0;
         $image = $this->uploadImage($files['image'] ?? null) ?? trim((string) ($post['image_url'] ?? '')) ?: $currentImage;
+        $image = normalize_image_path($image);
 
         if ($name === '' || $desc === '' || $price === false || $catId <= 0) {
             $errors[] = 'Completa nombre, descripción, precio y categoría.';
@@ -263,6 +264,7 @@ class AdminController
         $start = (string) ($post['start_date'] ?? '');
         $end = (string) ($post['end_date'] ?? '');
         $image = $this->uploadImage($files['image'] ?? null, 'promotions') ?? trim((string) ($post['image_url'] ?? '')) ?: $currentImage;
+        $image = normalize_image_path($image);
         $active = !empty($post['active']) ? 1 : 0;
 
         if ($title === '' || $desc === '' || !$start || !$end) {
@@ -307,6 +309,7 @@ class AdminController
         if (!move_uploaded_file($file['tmp_name'], $dir . '/' . $name)) {
             return null;
         }
-        return upload_url($subdir . '/' . $name);
+
+        return 'uploads/' . $subdir . '/' . $name;
     }
 }
