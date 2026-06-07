@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use Tests\CafeesquinaTestCase;
 
-class CafeesquinaHomeTest extends TestCase
+class CafeesquinaHomeTest extends CafeesquinaTestCase
 {
     public function test_home_page_loads(): void
     {

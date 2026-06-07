@@ -38,7 +38,7 @@ class ProductController
     public function logOrder(): void
     {
         header('Content-Type: application/json');
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        if (ce_request_method() !== 'POST') {
             http_response_code(405);
             echo json_encode(['ok' => false, 'error' => 'method']);
             exit;
@@ -51,6 +51,11 @@ class ProductController
         if (! ce_rate_limit('log_order:' . ce_client_ip(), 30, 3600)) {
             http_response_code(429);
             echo json_encode(['ok' => false, 'error' => 'rate_limit']);
+            exit;
+        }
+        if (! is_logged_in()) {
+            http_response_code(401);
+            echo json_encode(['ok' => false, 'error' => 'auth', 'redirect' => base_url('login?compra=1')]);
             exit;
         }
         $input = json_decode(file_get_contents('php://input'), true) ?? [];

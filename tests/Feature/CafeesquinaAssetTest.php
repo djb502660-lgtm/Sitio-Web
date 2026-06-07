@@ -2,15 +2,10 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use Tests\CafeesquinaTestCase;
 
-class CafeesquinaAssetTest extends TestCase
+class CafeesquinaAssetTest extends CafeesquinaTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        require_once base_path('cafeesquina/config/helpers.php');
-    }
 
     public function test_base_path_is_empty_with_artisan_serve(): void
     {
@@ -34,6 +29,14 @@ class CafeesquinaAssetTest extends TestCase
     {
         $_SERVER['SCRIPT_NAME'] = '/index.php';
         $this->assertSame('', ce_app_base_path());
+    }
+
+    public function test_base_path_strips_public_and_uses_app_url(): void
+    {
+        $_SERVER['SCRIPT_NAME'] = '/Sitio-Web/public/index.php';
+
+        $this->assertSame('/Sitio-Web', ce_app_base_path());
+        $this->assertSame('/Sitio-Web/admin/categorias', base_url('admin/categorias'));
     }
 
     public function test_css_asset_returns_200_with_correct_mime(): void

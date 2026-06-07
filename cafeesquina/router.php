@@ -43,6 +43,8 @@ function cafeesquina_dispatch(string $route): void
         'admin/usuarios' => [AdminController::class, 'users'],
         'admin/usuarios/update' => [AdminController::class, 'updateUser'],
         'admin/usuarios/delete' => [AdminController::class, 'deleteUser'],
+        'admin/ubicacion' => [AdminController::class, 'locationSettings'],
+        'admin/ubicacion/actualizar' => [AdminController::class, 'updateLocationSettings'],
     ];
 
     if (!isset($routes[$route])) {

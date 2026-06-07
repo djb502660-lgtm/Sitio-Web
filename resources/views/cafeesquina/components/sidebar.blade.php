@@ -10,6 +10,7 @@
         ['admin/categorias', 'Categorías', 'fa-tags'],
         ['admin/promociones', 'Promociones', 'fa-percent'],
         ['admin/usuarios', 'Usuarios', 'fa-users'],
+        ['admin/ubicacion', 'Ubicación', 'fa-map-marker-alt'],
     ];
 @endphp
 <aside class="admin-sidebar" aria-label="Panel administrativo">

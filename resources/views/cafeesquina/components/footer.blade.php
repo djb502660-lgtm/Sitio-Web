@@ -16,7 +16,7 @@
         </div>
         <div>
             <h4 style="font-weight:600;margin-bottom:0.75rem">Horario</h4>
-            <p style="opacity:0.9;font-size:0.875rem">{{ config('cafeesquina.hours') }}</p>
+            <p style="opacity:0.9;font-size:0.875rem">{{ site_config('hours') }}</p>
         </div>
     </div>
     <div class="container site-footer__bottom">&copy; {{ date('Y') }} CAFEESQUINA</div>

@@ -123,10 +123,10 @@
         <div class="grid grid-2" style="align-items:center;gap:2.5rem">
             <div>
                 @include('cafeesquina.components.section-heading', ['title' => 'Ubicación', 'subtitle' => ''])
-                <p class="mt-4"><i class="fas fa-map-marker-alt" style="color:var(--gold)"></i> {{ config('cafeesquina.address') }}</p>
-                <p class="mt-2 text-muted"><i class="fas fa-clock" style="color:var(--gold)"></i> {{ config('cafeesquina.hours') }}</p>
+                <p class="mt-4"><i class="fas fa-map-marker-alt" style="color:var(--gold)"></i> {{ site_config('address') }}</p>
+                <p class="mt-2 text-muted"><i class="fas fa-clock" style="color:var(--gold)"></i> {{ site_config('hours') }}</p>
             </div>
-            <iframe class="w-full" style="border:0;border-radius:var(--radius-lg);min-height:280px;box-shadow:var(--shadow)" src="{{ config('cafeesquina.map_embed') }}" loading="lazy" title="Mapa"></iframe>
+            <iframe class="w-full" style="border:0;border-radius:var(--radius-lg);min-height:280px;box-shadow:var(--shadow)" src="{{ site_config('map_embed') }}" loading="lazy" title="Mapa"></iframe>
         </div>
     </div>
 </section>
