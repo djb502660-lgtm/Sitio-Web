@@ -20,14 +20,37 @@ class HomeController
 
     public function sitemap(): void
     {
+        $xml = $this->buildSitemapXml();
+
+        if (function_exists('app') && class_exists(\Illuminate\Foundation\Application::class)) {
+            try {
+                $app = app();
+                if ($app->bound('router')) {
+                    throw new \Illuminate\Http\Exceptions\HttpResponseException(
+                        response($xml, 200, ['Content-Type' => 'application/xml; charset=utf-8'])
+                    );
+                }
+            } catch (\Illuminate\Http\Exceptions\HttpResponseException $e) {
+                throw $e;
+            } catch (\Throwable) {
+                // Fallback standalone abajo.
+            }
+        }
+
         header('Content-Type: application/xml; charset=utf-8');
+        echo $xml;
+    }
+
+    private function buildSitemapXml(): string
+    {
         $base = 'http://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . base_url('');
         $urls = ['', 'menu', 'login', 'register'];
-        echo '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+        $xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
         foreach ($urls as $u) {
-            echo '<url><loc>' . htmlspecialchars($base . ($u ? '/' . $u : '')) . '</loc></url>';
+            $xml .= '<url><loc>' . htmlspecialchars($base . ($u ? '/' . $u : '')) . '</loc></url>';
         }
-        echo '</urlset>';
-        exit;
+        $xml .= '</urlset>';
+
+        return $xml;
     }
 }

@@ -16,6 +16,20 @@ class Category
         return $s->fetch() ?: null;
     }
 
+    public function findByName(string $name, ?int $excludeId = null): ?array
+    {
+        $sql = 'SELECT * FROM categories WHERE name = ?';
+        $params = [$name];
+        if ($excludeId !== null) {
+            $sql .= ' AND id != ?';
+            $params[] = $excludeId;
+        }
+        $s = db()->prepare($sql . ' LIMIT 1');
+        $s->execute($params);
+
+        return $s->fetch() ?: null;
+    }
+
     public function create(string $name, ?string $description): bool
     {
         $s = db()->prepare('INSERT INTO categories (name, description) VALUES (?,?)');

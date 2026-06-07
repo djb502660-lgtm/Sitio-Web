@@ -30,7 +30,7 @@
     <main id="main-content" class="page-main">@yield('content')</main>
 
     @include('cafeesquina.components.footer')
-    <script src="{{ asset_url('js/app.js') }}?v=3" defer></script>
+    <script src="{{ asset_url('js/app.js') }}?v=5" defer></script>
     @stack('scripts')
 </body>
 </html>

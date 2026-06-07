@@ -5,8 +5,14 @@
     <div class="auth-card">
         <h1 class="auth-card__title">Iniciar sesión</h1>
         <p class="auth-card__sub">Accede a tu cuenta CAFEESQUINA</p>
+        @if(!empty($_GET['compra']))
+        <p class="text-sm text-muted mb-4">Inicia sesión para continuar con tu pedido.</p>
+        @endif
         <form method="post" action="{{ base_url('login/post') }}" class="mt-8" data-validate-form novalidate>
             {!! ce_csrf_field() !!}
+            @if(!empty($_GET['compra']))
+            <input type="hidden" name="compra" value="1">
+            @endif
             <div class="form-group">
                 <label class="form-label" for="email">Correo</label>
                 <input type="email" id="email" name="email" required class="input-field" data-validate="required|email" autocomplete="email">

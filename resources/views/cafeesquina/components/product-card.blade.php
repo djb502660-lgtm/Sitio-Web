@@ -20,14 +20,20 @@
         @endif
         <p class="product-card__price">${{ number_format((float) $product['price'], 2) }}</p>
         @if($available)
-        <a href="#"
-           class="btn btn-whatsapp product-card__btn"
-           data-whatsapp-order
-           data-product-id="{{ (int) $product['id'] }}"
-           data-wa-url="{{ $wa }}"
-           data-log-url="{{ base_url('pedido/registrar') }}">
-            <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
-        </a>
+            @if(is_logged_in())
+            <a href="#"
+               class="btn btn-whatsapp product-card__btn"
+               data-whatsapp-order
+               data-product-id="{{ (int) $product['id'] }}"
+               data-wa-url="{{ $wa }}"
+               data-log-url="{{ base_url('pedido/registrar') }}">
+                <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
+            </a>
+            @else
+            <a href="{{ base_url('login?compra=1') }}" class="btn btn-whatsapp product-card__btn">
+                <i class="fas fa-sign-in-alt"></i> Iniciar sesión para comprar
+            </a>
+            @endif
         @endif
     </div>
 </article>

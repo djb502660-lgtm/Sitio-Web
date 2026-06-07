@@ -8,9 +8,15 @@
             <p class="mt-4 text-coffee-light"><?= e($product['description']) ?></p>
             <p class="text-3xl font-bold mt-6 text-coffee-dark">$<?= e(number_format((float)$product['price'], 2)) ?></p>
             <p class="mt-2 text-sm">Estado: <?= $product['status'] === 'available' ? '✅ Disponible' : '❌ No disponible' ?></p>
+            <?php if (is_logged_in()): ?>
             <a href="#" class="btn-whatsapp mt-8" data-whatsapp-order data-product-id="<?= (int)$product['id'] ?>" data-wa-url="<?= e($wa) ?>" data-log-url="<?= e(base_url('pedido/registrar')) ?>">
                 <i class="fab fa-whatsapp"></i> Pedir por WhatsApp
             </a>
+            <?php else: ?>
+            <a href="<?= e(base_url('login?compra=1')) ?>" class="btn-whatsapp mt-8">
+                <i class="fas fa-sign-in-alt"></i> Iniciar sesión para comprar
+            </a>
+            <?php endif; ?>
         </div>
     </div>
 </section>

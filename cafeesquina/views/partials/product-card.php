@@ -10,6 +10,7 @@ $img = $product['image'] ?? asset_url('images/placeholder.jpg');
         <h3 class="text-lg font-bold mt-1"><?= e($product['name']) ?></h3>
         <p class="text-sm text-coffee-light mt-2 flex-1"><?= e(mb_substr($product['description'], 0, 90)) ?>…</p>
         <p class="text-xl font-bold text-coffee-dark mt-3">$<?= e(number_format((float) $product['price'], 2)) ?></p>
+        <?php if (is_logged_in()): ?>
         <a href="#"
            class="btn-whatsapp mt-4 w-full justify-center text-sm"
            data-whatsapp-order
@@ -18,5 +19,10 @@ $img = $product['image'] ?? asset_url('images/placeholder.jpg');
            data-log-url="<?= e(base_url('pedido/registrar')) ?>">
             <i class="fab fa-whatsapp"></i> Pedir por WhatsApp
         </a>
+        <?php else: ?>
+        <a href="<?= e(base_url('login?compra=1')) ?>" class="btn-whatsapp mt-4 w-full justify-center text-sm">
+            <i class="fas fa-sign-in-alt"></i> Iniciar sesión para comprar
+        </a>
+        <?php endif; ?>
     </div>
 </article>

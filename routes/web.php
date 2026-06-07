@@ -23,6 +23,11 @@ $ceStaticMime = static function (string $file): string {
         'js' => 'application/javascript',
         'svg' => 'image/svg+xml',
         'json' => 'application/json',
+        'png' => 'image/png',
+        'jpg', 'jpeg' => 'image/jpeg',
+        'gif' => 'image/gif',
+        'webp' => 'image/webp',
+        'ico' => 'image/x-icon',
         default => mime_content_type($file) ?: 'application/octet-stream',
     };
 };

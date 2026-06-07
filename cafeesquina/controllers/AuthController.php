@@ -14,14 +14,20 @@ class AuthController
     public function loginForm(): void
     {
         if (is_logged_in()) {
-            ce_redirect(is_admin() ? 'admin' : 'perfil');
+            if (is_admin()) {
+                ce_redirect('admin');
+            }
+            ce_redirect($this->clientRedirectAfterPurchaseIntent());
+        }
+        if (! empty($_GET['compra'])) {
+            flash('error', 'Debes iniciar sesión para comprar por WhatsApp.');
         }
         ce_view('auth/login', ['title' => 'Iniciar sesión']);
     }
 
     public function login(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        if (ce_request_method() !== 'POST') {
             ce_redirect('login');
         }
         if (! ce_csrf_verify()) {
@@ -39,7 +45,9 @@ class AuthController
             flash('error', 'Credenciales incorrectas.');
             ce_redirect('login');
         }
-        session_regenerate_id(true);
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_regenerate_id(true);
+        }
         $_SESSION['user'] = [
             'id' => (int) $user['id'],
             'username' => $user['username'],
@@ -48,7 +56,20 @@ class AuthController
             'full_name' => $user['full_name'] ?? '',
         ];
         flash('success', '¡Bienvenido a CAFEESQUINA!');
-        ce_redirect($user['role'] === 'admin' ? 'admin' : 'perfil');
+        if ($user['role'] === 'admin') {
+            ce_redirect('admin');
+        }
+        if (! empty($_POST['compra'])) {
+            $_SESSION['post_auth_redirect'] = 'menu';
+            $full = $this->users->find((int) $user['id']);
+            $phone = trim((string) ($full['phone'] ?? ''));
+            if ($phone === '') {
+                ce_redirect('perfil?compra=1');
+            }
+            unset($_SESSION['post_auth_redirect']);
+            ce_redirect('menu');
+        }
+        ce_redirect('perfil');
     }
 
     public function registerForm(): void
@@ -61,7 +82,7 @@ class AuthController
 
     public function register(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        if (ce_request_method() !== 'POST') {
             ce_redirect('register');
         }
         if (! ce_csrf_verify()) {
@@ -89,18 +110,20 @@ class AuthController
             ce_redirect('register');
         }
         $this->users->create($username, (string) $email, $password, 'client', $fullName);
-        flash('success', 'Cuenta creada. Inicia sesión.');
-        ce_redirect('login');
+        flash('success', 'Cuenta creada correctamente.');
+        ce_redirect('');
     }
 
     public function logout(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || ! ce_csrf_verify()) {
+        if (ce_request_method() !== 'POST' || ! ce_csrf_verify()) {
             flash('error', 'Solicitud inválida.');
             ce_redirect(is_logged_in() ? (is_admin() ? 'admin' : 'perfil') : '');
         }
         unset($_SESSION['user']);
-        session_regenerate_id(true);
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_regenerate_id(true);
+        }
         flash('success', 'Sesión cerrada.');
         ce_redirect('');
     }
@@ -135,8 +158,21 @@ class AuthController
             (string) $email
         );
         $_SESSION['user']['email'] = (string) $email;
+        $_SESSION['user']['full_name'] = sanitize_string((string) ($_POST['full_name'] ?? ''), 100);
         flash('success', 'Perfil actualizado.');
-        ce_redirect('perfil');
+        unset($_SESSION['post_auth_redirect']);
+        ce_redirect('menu');
+    }
+
+    private function clientRedirectAfterPurchaseIntent(): string
+    {
+        $user = $this->users->find((int) auth_user()['id']);
+        $phone = trim((string) ($user['phone'] ?? ''));
+        if ($phone === '') {
+            return 'perfil?compra=1';
+        }
+
+        return 'menu';
     }
 
     public function orders(): void
