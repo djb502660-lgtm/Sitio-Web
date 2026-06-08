@@ -1,6 +1,7 @@
 @php
     $wa = whatsapp_order_url($product['name'], (float) $product['price']);
-    $img = $product['image'] ?? 'https://images.unsplash.com/photo-1514432324607-09f969782a96?w=600';
+    $defaultImg = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="600" height="400"%3E%3Crect fill="%23E8D4C8" width="600" height="400"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="system-ui" font-size="24" fill="%235D4037"%3ECafé%3C/text%3E%3C/svg%3E';
+    $img = media_url($product['image'] ?? null, $defaultImg);
     $desc = (string) ($product['description'] ?? '');
     $available = ($product['status'] ?? 'available') === 'available';
 @endphp
@@ -29,6 +30,7 @@
                     data-product-image="{{ $img }}">
                 <i class="fas fa-cart-plus"></i> Añadir al carrito
             </button>
+            @if(is_logged_in())
             <a href="#"
                class="btn btn-whatsapp"
                data-whatsapp-order
@@ -37,6 +39,11 @@
                data-log-url="{{ base_url('pedido/registrar') }}">
                 <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
             </a>
+            @else
+            <a href="{{ base_url('login?compra=1') }}" class="btn btn-whatsapp">
+                <i class="fas fa-sign-in-alt"></i> Iniciar sesión para comprar
+            </a>
+            @endif
         </div>
         @endif
     </div>

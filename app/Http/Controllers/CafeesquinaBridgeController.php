@@ -20,11 +20,7 @@ class CafeesquinaBridgeController extends Controller
             $route = ltrim(substr($route, strlen($base)), '/');
         }
 
-        $_SERVER['REQUEST_METHOD'] = $request->method();
-        $_SERVER['REQUEST_URI'] = $request->getRequestUri();
-        if ($request->getContent() !== '') {
-            $_POST = array_merge($_POST, $request->request->all());
-        }
+        $this->syncLegacyRequest($request);
 
         require_once base_path('cafeesquina/router.php');
 
@@ -32,7 +28,9 @@ class CafeesquinaBridgeController extends Controller
         try {
             cafeesquina_dispatch($route);
         } catch (\Illuminate\Http\Exceptions\HttpResponseException $e) {
-            ob_end_clean();
+            if (ob_get_level() > 0) {
+                ob_end_clean();
+            }
             throw $e;
         }
         $html = ob_get_clean();
@@ -43,5 +41,20 @@ class CafeesquinaBridgeController extends Controller
         }
 
         return response($html, $status);
+    }
+
+    /**
+     * El motor MVC de cafeesquina/ lee $_SERVER, $_GET y $_POST directamente.
+     */
+    private function syncLegacyRequest(Request $request): void
+    {
+        $_SERVER['REQUEST_METHOD'] = $request->getMethod();
+        $_GET = $request->query->all();
+        $_POST = $request->request->all();
+
+        $csrf = $request->header('X-CSRF-TOKEN');
+        if (is_string($csrf) && $csrf !== '') {
+            $_SERVER['HTTP_X_CSRF_TOKEN'] = $csrf;
+        }
     }
 }

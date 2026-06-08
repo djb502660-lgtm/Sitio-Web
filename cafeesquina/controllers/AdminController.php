@@ -94,13 +94,18 @@ class AdminController
     public function storeCategory(): void
     {
         require_admin();
-        $this->guardPost();
+        $this->guardPost('admin/categorias');
         $name = sanitize_string((string) ($_POST['name'] ?? ''), 80);
         if ($name === '') {
             flash('error', 'Nombre obligatorio.');
             ce_redirect('admin/categorias');
         }
-        (new Category())->create($name, sanitize_string((string) ($_POST['description'] ?? ''), 255));
+        $category = new Category();
+        if ($category->findByName($name) !== null) {
+            flash('error', 'Ya existe una categoría con ese nombre.');
+            ce_redirect('admin/categorias');
+        }
+        $category->create($name, sanitize_string((string) ($_POST['description'] ?? ''), 255));
         flash('success', 'Categoría creada.');
         ce_redirect('admin/categorias');
     }
@@ -108,10 +113,25 @@ class AdminController
     public function updateCategory(): void
     {
         require_admin();
-        $this->guardPost();
-        (new Category())->update(
-            (int) ($_POST['id'] ?? 0),
-            sanitize_string((string) ($_POST['name'] ?? ''), 80),
+        $this->guardPost('admin/categorias');
+        $id = (int) ($_POST['id'] ?? 0);
+        $name = sanitize_string((string) ($_POST['name'] ?? ''), 80);
+        if ($id <= 0 || $name === '') {
+            flash('error', 'Datos de categoría incompletos.');
+            ce_redirect('admin/categorias');
+        }
+        $category = new Category();
+        if ($category->find($id) === null) {
+            flash('error', 'Categoría no encontrada.');
+            ce_redirect('admin/categorias');
+        }
+        if ($category->findByName($name, $id) !== null) {
+            flash('error', 'Ya existe otra categoría con ese nombre.');
+            ce_redirect('admin/categorias');
+        }
+        $category->update(
+            $id,
+            $name,
             sanitize_string((string) ($_POST['description'] ?? ''), 255)
         );
         flash('success', 'Categoría actualizada.');
@@ -121,7 +141,7 @@ class AdminController
     public function deleteCategory(): void
     {
         require_admin();
-        $this->guardPost();
+        $this->guardPost('admin/categorias');
         if (!(new Category())->delete((int) ($_POST['id'] ?? 0))) {
             flash('error', 'No se puede eliminar: tiene productos asociados.');
         } else {
@@ -180,6 +200,45 @@ class AdminController
         ce_redirect('admin/promociones');
     }
 
+    /* --- Ubicación --- */
+    public function locationSettings(): void
+    {
+        require_admin();
+        (new SiteSetting())->ensureDefaults();
+        ce_view('admin/location', [
+            'title' => 'Ubicación',
+            'settings' => [
+                'address' => (string) site_config('address'),
+                'hours' => (string) site_config('hours'),
+                'map_embed' => (string) site_config('map_embed'),
+            ],
+        ], 'admin');
+    }
+
+    public function updateLocationSettings(): void
+    {
+        require_admin();
+        $this->guardPost('admin/ubicacion');
+        $address = sanitize_string((string) ($_POST['address'] ?? ''), 255);
+        $hours = sanitize_string((string) ($_POST['hours'] ?? ''), 255);
+        $mapEmbed = trim((string) ($_POST['map_embed'] ?? ''));
+        if ($address === '' || $hours === '' || $mapEmbed === '') {
+            flash('error', 'Completa dirección, horario y URL del mapa.');
+            ce_redirect('admin/ubicacion');
+        }
+        if (! filter_var($mapEmbed, FILTER_VALIDATE_URL)) {
+            flash('error', 'URL del mapa inválida.');
+            ce_redirect('admin/ubicacion');
+        }
+        (new SiteSetting())->setMany([
+            'address' => $address,
+            'hours' => $hours,
+            'map_embed' => $mapEmbed,
+        ]);
+        flash('success', 'Ubicación actualizada.');
+        ce_redirect('admin/ubicacion');
+    }
+
     /* --- Usuarios --- */
     public function users(): void
     {
@@ -215,11 +274,11 @@ class AdminController
         ce_redirect('admin/usuarios');
     }
 
-    private function guardPost(): void
+    private function guardPost(string $fallback = 'admin'): void
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !ce_csrf_verify()) {
+        if (ce_request_method() !== 'POST' || !ce_csrf_verify()) {
             flash('error', 'Solicitud inválida.');
-            ce_redirect('admin');
+            ce_redirect($fallback);
         }
     }
 

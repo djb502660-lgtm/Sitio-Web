@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-    $heroImg = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1600&q=85';
+    $heroImg = upload_url('hero.jpg');
     $waNum = preg_replace('/\D/', '', (string) config('cafeesquina.whatsapp_number'));
     $waGeneral = 'https://wa.me/' . $waNum . '?text=' . rawurlencode('Hola, quiero comprar este producto');
     $catIcons = ['fa-mug-hot', 'fa-cookie-bite', 'fa-glass-water', 'fa-bread-slice', 'fa-ice-cream', 'fa-leaf'];
@@ -75,7 +75,7 @@
         <div class="grid grid-2">
             @forelse($promotions as $promo)
             <article class="promo-card">
-                <img src="{{ $promo['image'] }}" alt="" class="promo-card__img" loading="lazy">
+                <img src="{{ media_url($promo['image'] ?? null) }}" alt="" class="promo-card__img" loading="lazy">
                 <div class="promo-card__body">
                     <h3 class="font-display" style="font-size:1.25rem;font-weight:700">{{ $promo['title'] }}</h3>
                     <p class="text-muted text-sm mt-2">{{ $promo['description'] }}</p>
@@ -123,10 +123,10 @@
         <div class="grid grid-2" style="align-items:center;gap:2.5rem">
             <div>
                 @include('cafeesquina.components.section-heading', ['title' => 'Ubicación', 'subtitle' => ''])
-                <p class="mt-4"><i class="fas fa-map-marker-alt" style="color:var(--gold)"></i> {{ config('cafeesquina.address') }}</p>
-                <p class="mt-2 text-muted"><i class="fas fa-clock" style="color:var(--gold)"></i> {{ config('cafeesquina.hours') }}</p>
+                <p class="mt-4"><i class="fas fa-map-marker-alt" style="color:var(--gold)"></i> {{ site_config('address') }}</p>
+                <p class="mt-2 text-muted"><i class="fas fa-clock" style="color:var(--gold)"></i> {{ site_config('hours') }}</p>
             </div>
-            <iframe class="w-full" style="border:0;border-radius:var(--radius-lg);min-height:280px;box-shadow:var(--shadow)" src="{{ config('cafeesquina.map_embed') }}" loading="lazy" title="Mapa"></iframe>
+            <iframe class="w-full" style="border:0;border-radius:var(--radius-lg);min-height:280px;box-shadow:var(--shadow)" src="{{ site_config('map_embed') }}" loading="lazy" title="Mapa"></iframe>
         </div>
     </div>
 </section>

@@ -10,22 +10,103 @@ if (! function_exists('e')) {
     }
 }
 
+/**
+ * Ruta base real según el entorno (raíz con artisan serve, /Sitio-Web con Laragon/XAMPP).
+ */
+function ce_app_base_path(): string
+{
+    if (function_exists('app_config')) {
+        $configured = app_config('base_url');
+        if (is_string($configured) && $configured !== '' && $configured !== '/') {
+            return rtrim($configured, '/');
+        }
+    }
+
+    if (function_exists('config')) {
+        try {
+            $path = parse_url((string) config('app.url'), PHP_URL_PATH);
+            if (is_string($path) && $path !== '' && $path !== '/') {
+                return rtrim($path, '/');
+            }
+        } catch (\Throwable) {
+            // Fallback a SCRIPT_NAME abajo.
+        }
+    }
+
+    $scriptName = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? '/index.php'));
+    $base = dirname($scriptName);
+
+    // Windows: dirname('/index.php') puede devolver '\' en vez de '/'
+    if ($base === '\\' || $base === '.' || $base === '/') {
+        return '';
+    }
+
+    $base = rtrim($base, '/');
+
+    // Front controller en public/ (Laravel): la URL pública no incluye /public
+    if (str_ends_with($base, '/public')) {
+        $base = substr($base, 0, -7);
+        if ($base === '') {
+            return '';
+        }
+    }
+
+    return $base;
+}
+
 function base_url(string $path = ''): string
 {
-    $base = rtrim((string) app_config('base_url'), '/');
-    return $base . ($path !== '' ? '/' . ltrim($path, '/') : '');
+    $base = ce_app_base_path();
+
+    if ($path === '') {
+        return $base !== '' ? $base : '/';
+    }
+
+    return ($base !== '' ? $base : '') . '/' . ltrim($path, '/');
+}
+
+/**
+ * Configuración del sitio (BD) con respaldo en config/cafeesquina.php.
+ */
+function site_config(string $key): mixed
+{
+    if (! isset($GLOBALS['ce_site_config_cache'])) {
+        $GLOBALS['ce_site_config_cache'] = null;
+    }
+
+    if ($GLOBALS['ce_site_config_cache'] === null) {
+        $GLOBALS['ce_site_config_cache'] = [];
+        try {
+            $model = new SiteSetting();
+            $model->ensureDefaults();
+            $GLOBALS['ce_site_config_cache'] = $model->allKeyed();
+        } catch (\Throwable) {
+            // Sin tabla o sin conexión: solo config estática.
+        }
+    }
+
+    $cache = $GLOBALS['ce_site_config_cache'];
+    if (isset($cache[$key]) && $cache[$key] !== '') {
+        return $cache[$key];
+    }
+
+    return app_config($key);
+}
+
+function site_config_flush(): void
+{
+    unset($GLOBALS['ce_site_config_cache']);
 }
 
 function ce_redirect(string $path): never
 {
-    $url = base_url($path);
-
     if (function_exists('app') && class_exists(\Illuminate\Foundation\Application::class)) {
         try {
             $app = app();
             if ($app->bound('router')) {
+                // Ruta relativa al APP_URL de Laravel (evita /Sitio-Web/Sitio-Web/...)
                 throw new \Illuminate\Http\Exceptions\HttpResponseException(
-                    redirect()->to($url)
+                    redirect('/' . ltrim($path, '/'))
                 );
             }
         } catch (\Illuminate\Http\Exceptions\HttpResponseException $e) {
@@ -35,7 +116,7 @@ function ce_redirect(string $path): never
         }
     }
 
-    header('Location: ' . $url, true, 302);
+    header('Location: ' . base_url($path), true, 302);
     exit;
 }
 
@@ -53,6 +134,11 @@ function ce_csrf_field(): string
 function ce_csrf_verify(): bool
 {
     return ce_csrf_verify_request();
+}
+
+function ce_request_method(): string
+{
+    return strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET'));
 }
 
 function ce_csrf_verify_request(): bool
@@ -221,4 +307,32 @@ function asset_url(string $path): string
 function upload_url(string $path): string
 {
     return base_url('uploads/' . ltrim($path, '/'));
+}
+
+function media_url(?string $path, ?string $fallback = null): string
+{
+    if ($path === null || $path === '') {
+        return $fallback ?? '';
+    }
+
+    if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://') || str_starts_with($path, 'data:')) {
+        return $path;
+    }
+
+    $base = rtrim((string) app_config('base_url'), '/');
+    if ($base !== '' && (str_starts_with($path, $base . '/') || $path === $base)) {
+        return $path;
+    }
+
+    $normalized = ltrim(str_replace('\\', '/', $path), '/');
+
+    // Rutas guardadas como products/foo.png → servir desde uploads/
+    if (! str_starts_with($normalized, 'uploads/') && ! str_starts_with($normalized, 'assets/')) {
+        $localCandidate = dirname(__DIR__) . '/uploads/' . $normalized;
+        if (is_file($localCandidate)) {
+            $normalized = 'uploads/' . $normalized;
+        }
+    }
+
+    return base_url($normalized);
 }

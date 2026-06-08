@@ -16,23 +16,39 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 Route::redirect('/cafeesquina', '/', 301);
 Route::redirect('/cafeesquina/{any}', '/{any}', 301)->where('any', '.*');
 
+/** MIME explícito para que el navegador interprete CSS/JS correctamente */
+$ceStaticMime = static function (string $file): string {
+    return match (strtolower(pathinfo($file, PATHINFO_EXTENSION))) {
+        'css' => 'text/css',
+        'js' => 'application/javascript',
+        'svg' => 'image/svg+xml',
+        'json' => 'application/json',
+        'png' => 'image/png',
+        'jpg', 'jpeg' => 'image/jpeg',
+        'gif' => 'image/gif',
+        'webp' => 'image/webp',
+        'ico' => 'image/x-icon',
+        default => mime_content_type($file) ?: 'application/octet-stream',
+    };
+};
+
 /** Archivos estáticos (fallback si Apache no reescribe; sin sesión Laravel) */
-Route::get('/assets/{path}', function (string $path): BinaryFileResponse {
+Route::get('/assets/{path}', function (string $path) use ($ceStaticMime): BinaryFileResponse {
     $file = base_path('cafeesquina/assets/' . $path);
     abort_unless(is_file($file), 404);
 
-    return response()->file($file);
+    return response()->file($file, ['Content-Type' => $ceStaticMime($file)]);
 })->where('path', '.*')->withoutMiddleware([
     StartSession::class,
     ShareErrorsFromSession::class,
     VerifyCsrfToken::class,
 ]);
 
-Route::get('/uploads/{path}', function (string $path): BinaryFileResponse {
+Route::get('/uploads/{path}', function (string $path) use ($ceStaticMime): BinaryFileResponse {
     $file = base_path('cafeesquina/uploads/' . $path);
     abort_unless(is_file($file), 404);
 
-    return response()->file($file);
+    return response()->file($file, ['Content-Type' => $ceStaticMime($file)]);
 })->where('path', '.*')->withoutMiddleware([
     StartSession::class,
     ShareErrorsFromSession::class,

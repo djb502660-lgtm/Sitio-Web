@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 $appConfig = require __DIR__ . '/app.php';
 
+require_once __DIR__ . '/helpers.php';
+
 session_name($appConfig['session_name']);
-$sessionPath = rtrim((string) ($appConfig['base_url'] ?? ''), '/') ?: '/';
+$sessionPath = ce_app_base_path() ?: '/';
 session_set_cookie_params([
     'lifetime' => 0,
     'path' => $sessionPath,
@@ -26,8 +28,6 @@ spl_autoload_register(function (string $class): void {
         }
     }
 });
-
-require_once __DIR__ . '/helpers.php';
 
 function db(): PDO
 {

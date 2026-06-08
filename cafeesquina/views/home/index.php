@@ -1,5 +1,5 @@
 <?php
-$heroImg = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1600';
+$heroImg = upload_url('hero.jpg');
 $waGeneral = 'https://wa.me/' . preg_replace('/\D/', '', (string) app_config('whatsapp_number')) . '?text=' . rawurlencode('Hola CAFEESQUINA, quisiera hacer un pedido.');
 ?>
 <!-- Hero -->
@@ -113,13 +113,13 @@ $waGeneral = 'https://wa.me/' . preg_replace('/\D/', '', (string) app_config('wh
     <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-10">
         <div>
             <h2 class="text-3xl font-bold">Ubicación</h2>
-            <p class="mt-4 flex items-start gap-2"><i class="fas fa-map-marker-alt text-gold mt-1"></i> <?= e((string) app_config('address')) ?></p>
-            <p class="mt-2 flex items-start gap-2"><i class="fas fa-clock text-gold mt-1"></i> <?= e((string) app_config('hours')) ?></p>
+            <p class="mt-4 flex items-start gap-2"><i class="fas fa-map-marker-alt text-gold mt-1"></i> <?= e((string) site_config('address')) ?></p>
+            <p class="mt-2 flex items-start gap-2"><i class="fas fa-clock text-gold mt-1"></i> <?= e((string) site_config('hours')) ?></p>
             <div class="mt-6 flex gap-4">
                 <a href="<?= e(app_config('social')['instagram']) ?>" class="text-2xl hover:text-gold"><i class="fab fa-instagram"></i></a>
                 <a href="<?= e(app_config('social')['facebook']) ?>" class="text-2xl hover:text-gold"><i class="fab fa-facebook"></i></a>
             </div>
         </div>
-        <iframe class="w-full h-72 rounded-2xl shadow-lg border-0" src="<?= e((string) app_config('map_embed')) ?>" loading="lazy" title="Mapa CAFEESQUINA"></iframe>
+        <iframe class="w-full h-72 rounded-2xl shadow-lg border-0" src="<?= e((string) site_config('map_embed')) ?>" loading="lazy" title="Mapa CAFEESQUINA"></iframe>
     </div>
 </section>

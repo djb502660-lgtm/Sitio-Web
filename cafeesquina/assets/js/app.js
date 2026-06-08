@@ -88,6 +88,11 @@ const CE = {
             document.querySelectorAll('[data-whatsapp-order]').forEach((btn) => {
                 btn.addEventListener('click', async (e) => {
                     e.preventDefault();
+                    const loginUrl = btn.dataset.loginUrl || '/login?compra=1';
+                    if (btn.dataset.requireLogin === '1') {
+                        window.location.href = loginUrl;
+                        return;
+                    }
                     const id = btn.dataset.productId;
                     const url = btn.dataset.waUrl;
                     if (id && btn.dataset.logUrl) {
@@ -95,12 +100,17 @@ const CE = {
                         const headers = { 'Content-Type': 'application/json' };
                         if (csrf) headers['X-CSRF-TOKEN'] = csrf;
                         try {
-                            await fetch(btn.dataset.logUrl, {
+                            const res = await fetch(btn.dataset.logUrl, {
                                 method: 'POST',
                                 headers,
                                 credentials: 'same-origin',
                                 body: JSON.stringify({ product_id: parseInt(id, 10) }),
                             });
+                            if (res.status === 401) {
+                                const data = await res.json().catch(() => ({}));
+                                window.location.href = data.redirect || loginUrl;
+                                return;
+                            }
                         } catch (_) { /* noop */ }
                     }
                     if (url) window.open(url, '_blank', 'noopener');

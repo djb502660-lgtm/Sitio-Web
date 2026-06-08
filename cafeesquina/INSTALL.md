@@ -44,3 +44,7 @@ Preferir siempre `php artisan migrate --seed`.
 ```bash
 php artisan test --filter=Cafeesquina
 ```
+
+## Despliegue en producción
+
+Ver [`docs/DESPLIEGUE.md`](../docs/DESPLIEGUE.md) (hosting PHP, cPanel, VPS y notas sobre Netlify).
