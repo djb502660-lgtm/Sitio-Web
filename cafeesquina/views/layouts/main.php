@@ -48,6 +48,10 @@ $menuActive = $currentPath === 'menu' ? 'is-active' : '';
             <li><a href="<?= e(base_url('')) ?>#ubicacion" class="hover:text-gold">Ubicación</a></li>
         </ul>
         <div class="nav-actions flex items-center gap-3 text-sm">
+            <a href="<?= e(base_url('carrito')) ?>" class="cart-btn" aria-label="Carrito de compras">
+                <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+                <span class="cart-btn__badge hidden" data-cart-count hidden>0</span>
+            </a>
             <?php if (is_admin()): ?>
                 <a href="<?= e(base_url('admin')) ?>" class="text-gold font-semibold"><i class="fas fa-chart-line"></i> Admin</a>
             <?php endif; ?>
@@ -70,6 +74,7 @@ $menuActive = $currentPath === 'menu' ? 'is-active' : '';
         </div>
     </div>
     <div class="nav-mobile-panel" data-nav-panel>
+        <a href="<?= e(base_url('carrito')) ?>">Carrito</a>
         <a href="<?= e(base_url('')) ?>#inicio">Inicio</a>
         <a href="<?= e(base_url('menu')) ?>">Menú</a>
         <a href="<?= e(base_url('')) ?>#nosotros">Nosotros</a>

@@ -17,6 +17,8 @@ function cafeesquina_dispatch(string $route): void
         '' => [HomeController::class, 'index'],
         'menu' => [ProductController::class, 'menu'],
         'producto' => [ProductController::class, 'show'],
+        'carrito' => [CartController::class, 'index'],
+        'carrito/checkout' => [CartController::class, 'checkout'],
         'pedido/registrar' => [ProductController::class, 'logOrder'],
         'login' => [AuthController::class, 'loginForm'],
         'login/post' => [AuthController::class, 'login'],

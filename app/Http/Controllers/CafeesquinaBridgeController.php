@@ -20,6 +20,12 @@ class CafeesquinaBridgeController extends Controller
             $route = ltrim(substr($route, strlen($base)), '/');
         }
 
+        $_SERVER['REQUEST_METHOD'] = $request->method();
+        $_SERVER['REQUEST_URI'] = $request->getRequestUri();
+        if ($request->getContent() !== '') {
+            $_POST = array_merge($_POST, $request->request->all());
+        }
+
         require_once base_path('cafeesquina/router.php');
 
         ob_start();

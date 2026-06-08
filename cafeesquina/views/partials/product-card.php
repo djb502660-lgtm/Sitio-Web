@@ -21,14 +21,25 @@ $searchText = strtolower(($product['name'] ?? '') . ' ' . ($product['category_na
         <?php endif; ?>
         <p class="product-card__price">$<?= e(number_format((float) $product['price'], 2)) ?></p>
         <?php if ($available): ?>
-        <a href="#"
-           class="btn btn-whatsapp product-card__btn"
-           data-whatsapp-order
-           data-product-id="<?= (int) $product['id'] ?>"
-           data-wa-url="<?= e($wa) ?>"
-           data-log-url="<?= e(base_url('pedido/registrar')) ?>">
-            <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
-        </a>
+        <div class="product-card__actions">
+            <button type="button"
+                    class="btn btn-primary"
+                    data-add-to-cart
+                    data-product-id="<?= (int) $product['id'] ?>"
+                    data-product-name="<?= e($product['name']) ?>"
+                    data-product-price="<?= (float) $product['price'] ?>"
+                    data-product-image="<?= e($img) ?>">
+                <i class="fas fa-cart-plus"></i> Añadir al carrito
+            </button>
+            <a href="#"
+               class="btn btn-whatsapp"
+               data-whatsapp-order
+               data-product-id="<?= (int) $product['id'] ?>"
+               data-wa-url="<?= e($wa) ?>"
+               data-log-url="<?= e(base_url('pedido/registrar')) ?>">
+                <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
+            </a>
+        </div>
         <?php endif; ?>
     </div>
 </article>

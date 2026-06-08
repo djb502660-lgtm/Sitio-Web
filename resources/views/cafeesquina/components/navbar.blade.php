@@ -20,6 +20,10 @@
         </ul>
 
         <div class="nav-actions">
+            <a href="{{ base_url('carrito') }}" class="cart-btn" aria-label="Carrito de compras">
+                <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+                <span class="cart-btn__badge hidden" data-cart-count hidden>0</span>
+            </a>
             <button type="button" class="theme-toggle" data-theme-toggle aria-label="Cambiar tema">
                 <i class="fas fa-moon" data-theme-icon aria-hidden="true"></i>
             </button>
@@ -41,6 +45,7 @@
         </div>
     </div>
     <div class="nav-mobile-panel" data-nav-panel>
+        <a href="{{ base_url('carrito') }}">Carrito</a>
         <a href="{{ base_url('menu') }}">Menú</a>
         <a href="{{ base_url('login') }}">Entrar</a>
         <a href="{{ base_url('register') }}" class="btn btn-primary btn-block mt-4">Crear cuenta</a>

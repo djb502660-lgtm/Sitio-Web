@@ -15,7 +15,7 @@
     <meta name="csrf-token" content="{{ ce_csrf_token() }}">
     <link rel="canonical" href="{{ $canonical }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset_url('css/cafeesquina.css') }}?v=4">
+    <link rel="stylesheet" href="{{ asset_url('css/cafeesquina.css') }}?v=5">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>(function(){var t=localStorage.getItem('ce-theme');if(t)document.documentElement.dataset.theme=t;})();</script>
 </head>
@@ -30,7 +30,7 @@
     <main id="main-content" class="page-main">@yield('content')</main>
 
     @include('cafeesquina.components.footer')
-    <script src="{{ asset_url('js/app.js') }}?v=4" defer></script>
+    <script src="{{ asset_url('js/app.js') }}?v=5" defer></script>
     @stack('scripts')
 </body>
 </html>
