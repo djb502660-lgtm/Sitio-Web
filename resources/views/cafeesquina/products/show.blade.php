@@ -22,9 +22,19 @@
                 <p class="text-muted mt-4" style="font-size:1.0625rem;line-height:1.7">{{ $product['description'] }}</p>
                 <p class="product-card__price" style="font-size:2rem;margin-top:1.5rem">${{ number_format((float) $product['price'], 2) }}</p>
                 @if($available)
+                <div class="product-card__actions" style="max-width:320px">
+                    <button type="button"
+                            class="btn btn-primary"
+                            data-add-to-cart
+                            data-product-id="{{ (int) $product['id'] }}"
+                            data-product-name="{{ $product['name'] }}"
+                            data-product-price="{{ (float) $product['price'] }}"
+                            data-product-image="{{ $img }}">
+                        <i class="fas fa-cart-plus"></i> Añadir al carrito
+                    </button>
                     @if(is_logged_in())
                     <a href="#"
-                       class="btn btn-whatsapp mt-6"
+                       class="btn btn-whatsapp"
                        data-whatsapp-order
                        data-product-id="{{ (int) $product['id'] }}"
                        data-wa-url="{{ $wa }}"
@@ -32,10 +42,11 @@
                         <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
                     </a>
                     @else
-                    <a href="{{ base_url('login?compra=1') }}" class="btn btn-whatsapp mt-6">
+                    <a href="{{ base_url('login?compra=1') }}" class="btn btn-whatsapp">
                         <i class="fas fa-sign-in-alt"></i> Iniciar sesión para comprar
                     </a>
                     @endif
+                </div>
                 @else
                 <p class="mt-6 text-muted">Producto no disponible por el momento.</p>
                 @endif

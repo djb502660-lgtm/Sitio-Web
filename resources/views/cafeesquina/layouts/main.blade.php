@@ -15,7 +15,7 @@
     <meta name="csrf-token" content="{{ ce_csrf_token() }}">
     <link rel="canonical" href="{{ $canonical }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset_url('css/cafeesquina.css') }}?v=3">
+    <link rel="stylesheet" href="{{ asset_url('css/cafeesquina.css') }}?v=5">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>(function(){var t=localStorage.getItem('ce-theme');if(t)document.documentElement.dataset.theme=t;})();</script>
 </head>

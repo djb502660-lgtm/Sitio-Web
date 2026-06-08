@@ -1,21 +1,12 @@
 <?php
 /** @var array $product */
 $wa = whatsapp_order_url($product['name'], (float) $product['price']);
-$img = $product['image'] ?? 'https://images.unsplash.com/photo-1514432324607-09f969782a96?w=600';
+$defaultImg = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="600" height="400"%3E%3Crect fill="%23E8D4C8" width="600" height="400"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="system-ui" font-size="24" fill="%235D4037"%3ECafé%3C/text%3E%3C/svg%3E';
+$img = function_exists('media_url') ? media_url($product['image'] ?? null, $defaultImg) : ($product['image'] ?? $defaultImg);
 $desc = (string) ($product['description'] ?? '');
 $available = ($product['status'] ?? 'available') === 'available';
 $searchText = strtolower(($product['name'] ?? '') . ' ' . ($product['category_name'] ?? ''));
 ?>
-<<<<<<< Updated upstream
-<article class="card-cafe flex flex-col reveal">
-    <img src="<?= e($img) ?>" alt="<?= e($product['name']) ?>" class="h-48 w-full object-cover" loading="lazy">
-    <div class="p-5 flex flex-col flex-1">
-        <span class="text-xs uppercase tracking-wide text-gold font-semibold"><?= e($product['category_name'] ?? '') ?></span>
-        <h3 class="text-lg font-bold mt-1"><?= e($product['name']) ?></h3>
-        <p class="text-sm text-coffee-light mt-2 flex-1"><?= e(mb_substr($product['description'], 0, 90)) ?>…</p>
-        <p class="text-xl font-bold text-coffee-dark mt-3">$<?= e(number_format((float) $product['price'], 2)) ?></p>
-        <?php if (is_logged_in()): ?>
-=======
 <article class="product-card" data-product-card data-search-text="<?= e($searchText) ?>">
     <a href="<?= e(base_url('producto?id=' . (int) $product['id'])) ?>" class="product-card__img-wrap">
         <img src="<?= e($img) ?>" alt="<?= e($product['name']) ?>" class="product-card__img" loading="lazy" decoding="async">
@@ -31,22 +22,31 @@ $searchText = strtolower(($product['name'] ?? '') . ' ' . ($product['category_na
         <?php endif; ?>
         <p class="product-card__price">$<?= e(number_format((float) $product['price'], 2)) ?></p>
         <?php if ($available): ?>
->>>>>>> Stashed changes
-        <a href="#"
-           class="btn btn-whatsapp product-card__btn"
-           data-whatsapp-order
-           data-product-id="<?= (int) $product['id'] ?>"
-           data-wa-url="<?= e($wa) ?>"
-           data-log-url="<?= e(base_url('pedido/registrar')) ?>">
-            <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
-        </a>
-<<<<<<< Updated upstream
-        <?php else: ?>
-        <a href="<?= e(base_url('login?compra=1')) ?>" class="btn-whatsapp mt-4 w-full justify-center text-sm">
-            <i class="fas fa-sign-in-alt"></i> Iniciar sesión para comprar
-        </a>
-=======
->>>>>>> Stashed changes
+        <div class="product-card__actions">
+            <button type="button"
+                    class="btn btn-primary"
+                    data-add-to-cart
+                    data-product-id="<?= (int) $product['id'] ?>"
+                    data-product-name="<?= e($product['name']) ?>"
+                    data-product-price="<?= (float) $product['price'] ?>"
+                    data-product-image="<?= e($img) ?>">
+                <i class="fas fa-cart-plus"></i> Añadir al carrito
+            </button>
+            <?php if (is_logged_in()): ?>
+            <a href="#"
+               class="btn btn-whatsapp"
+               data-whatsapp-order
+               data-product-id="<?= (int) $product['id'] ?>"
+               data-wa-url="<?= e($wa) ?>"
+               data-log-url="<?= e(base_url('pedido/registrar')) ?>">
+                <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
+            </a>
+            <?php else: ?>
+            <a href="<?= e(base_url('login?compra=1')) ?>" class="btn btn-whatsapp">
+                <i class="fas fa-sign-in-alt"></i> Iniciar sesión para comprar
+            </a>
+            <?php endif; ?>
+        </div>
         <?php endif; ?>
     </div>
 </article>

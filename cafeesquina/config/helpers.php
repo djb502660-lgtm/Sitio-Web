@@ -247,6 +247,32 @@ function whatsapp_order_url(string $productName, float $price): string
     return 'https://wa.me/' . $num . '?text=' . rawurlencode($msg);
 }
 
+/**
+ * @param list<array{name: string, price: float, qty: int}> $lines
+ */
+function whatsapp_cart_url(array $lines): string
+{
+    $user = auth_user();
+    $hello = $user
+        ? "Hola, soy {$user['username']}. Me gustaría ordenar:"
+        : 'Hola, me gustaría ordenar:';
+    $body = '';
+    $total = 0.0;
+    foreach ($lines as $i => $line) {
+        $qty = max(1, (int) ($line['qty'] ?? 1));
+        $name = (string) ($line['name'] ?? '');
+        $price = (float) ($line['price'] ?? 0);
+        $sub = $price * $qty;
+        $total += $sub;
+        $label = $qty > 1 ? "{$name} x{$qty}" : $name;
+        $body .= sprintf("\n%d. %s — $%s", $i + 1, $label, number_format($sub, 2));
+    }
+    $msg = sprintf("%s%s\n\n💲 Total: $%s\n\nGracias.", $hello, $body, number_format($total, 2));
+    $num = preg_replace('/\D/', '', (string) app_config('whatsapp_number'));
+
+    return 'https://wa.me/' . $num . '?text=' . rawurlencode($msg);
+}
+
 function ce_view(string $name, array $data = [], string $layout = 'main'): void
 {
     $data['extendsLayout'] = $layout === 'admin'

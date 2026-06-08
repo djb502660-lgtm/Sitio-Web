@@ -12,6 +12,24 @@ class Order
         return $s->execute([$userId, $productId, $productName, $price]);
     }
 
+    /**
+     * @param list<array{product_id: int, name: string, price: float, qty: int}> $lines
+     */
+    public function logLines(?int $userId, array $lines): bool
+    {
+        $s = db()->prepare(
+            'INSERT INTO orders (user_id, product_id, product_name, price, channel) VALUES (?,?,?,?,\'cart\')'
+        );
+        foreach ($lines as $line) {
+            $qty = max(1, (int) ($line['qty'] ?? 1));
+            $name = $qty > 1 ? $line['name'] . ' x' . $qty : $line['name'];
+            $price = (float) $line['price'] * $qty;
+            $s->execute([$userId, (int) $line['product_id'], $name, $price]);
+        }
+
+        return true;
+    }
+
     public function byUser(int $userId): array
     {
         $s = db()->prepare('SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC');

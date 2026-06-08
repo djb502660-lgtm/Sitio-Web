@@ -16,17 +16,7 @@
             <button type="submit" class="btn btn-primary">Filtrar</button>
         </form>
 
-<<<<<<< Updated upstream
         <div data-catalog-grid class="grid grid-4">
-=======
-        <div data-catalog-skeleton class="grid grid-4">
-            @for($i = 0; $i < 4; $i++)
-                @include('cafeesquina.components.skeleton-card')
-            @endfor
-        </div>
-
-        <div data-catalog-grid class="grid grid-4" hidden>
->>>>>>> Stashed changes
             @forelse($products as $product)
                 @include('cafeesquina.components.product-card')
             @empty
