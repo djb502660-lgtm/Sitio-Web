@@ -208,17 +208,21 @@ const CE = {
     },
 
     catalog: {
+        setVisible(el, visible) {
+            el.hidden = !visible;
+            el.classList.toggle('hidden', !visible);
+        },
         init() {
             const grid = document.querySelector('[data-catalog-grid]');
             const skeleton = document.querySelector('[data-catalog-skeleton]');
             const search = document.querySelector('[data-instant-search]');
             if (skeleton && grid) {
-                skeleton.hidden = false;
-                grid.hidden = true;
+                this.setVisible(skeleton, true);
+                this.setVisible(grid, false);
                 window.addEventListener('load', () => {
                     setTimeout(() => {
-                        skeleton.hidden = true;
-                        grid.hidden = false;
+                        this.setVisible(skeleton, false);
+                        this.setVisible(grid, true);
                     }, 400);
                 });
             }

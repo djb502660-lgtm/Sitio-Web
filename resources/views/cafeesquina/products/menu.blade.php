@@ -22,7 +22,7 @@
             @endfor
         </div>
 
-        <div data-catalog-grid class="grid grid-4 hidden">
+        <div data-catalog-grid class="grid grid-4" hidden>
             @forelse($products as $product)
                 @include('cafeesquina.components.product-card')
             @empty

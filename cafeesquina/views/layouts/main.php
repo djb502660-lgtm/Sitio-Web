@@ -26,19 +26,28 @@ $canonical = 'http://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . base_url($_SER
 <body class="bg-cream text-coffee-dark antialiased">
 <div id="page-loader"><i class="fas fa-mug-hot text-4xl text-gold animate-pulse"></i></div>
 
-<nav class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
-        <a href="<?= e(base_url('')) ?>" class="text-xl font-bold tracking-tight">
-            <i class="fas fa-coffee text-gold"></i> CAFEESQUINA
+<?php
+$currentPath = trim(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: '', '/');
+$basePath = trim((string) parse_url(base_url(''), PHP_URL_PATH), '/');
+if ($basePath !== '' && str_starts_with($currentPath, $basePath)) {
+    $currentPath = trim(substr($currentPath, strlen($basePath)), '/');
+}
+$menuActive = $currentPath === 'menu' ? 'is-active' : '';
+?>
+<nav class="site-nav sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm" data-site-nav>
+    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16 site-nav__inner">
+        <a href="<?= e(base_url('')) ?>" class="text-xl font-bold tracking-tight brand">
+            <span class="brand__icon"><i class="fas fa-coffee" aria-hidden="true"></i></span>
+            CAFEESQUINA
         </a>
-        <div class="hidden md:flex gap-6 text-sm font-medium">
-            <a href="<?= e(base_url('')) ?>#inicio" class="hover:text-gold">Inicio</a>
-            <a href="<?= e(base_url('menu')) ?>" class="hover:text-gold">Menú</a>
-            <a href="<?= e(base_url('')) ?>#nosotros" class="hover:text-gold">Nosotros</a>
-            <a href="<?= e(base_url('')) ?>#promociones" class="hover:text-gold">Promociones</a>
-            <a href="<?= e(base_url('')) ?>#ubicacion" class="hover:text-gold">Ubicación</a>
-        </div>
-        <div class="flex items-center gap-3 text-sm">
+        <ul class="nav-links hidden md:flex gap-6 text-sm font-medium">
+            <li><a href="<?= e(base_url('')) ?>#inicio" class="hover:text-gold">Inicio</a></li>
+            <li><a href="<?= e(base_url('menu')) ?>" class="hover:text-gold <?= $menuActive ?>">Menú</a></li>
+            <li><a href="<?= e(base_url('')) ?>#nosotros" class="hover:text-gold">Nosotros</a></li>
+            <li><a href="<?= e(base_url('')) ?>#promociones" class="hover:text-gold">Promociones</a></li>
+            <li><a href="<?= e(base_url('')) ?>#ubicacion" class="hover:text-gold">Ubicación</a></li>
+        </ul>
+        <div class="nav-actions flex items-center gap-3 text-sm">
             <?php if (is_admin()): ?>
                 <a href="<?= e(base_url('admin')) ?>" class="text-gold font-semibold"><i class="fas fa-chart-line"></i> Admin</a>
             <?php endif; ?>
@@ -55,7 +64,21 @@ $canonical = 'http://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . base_url($_SER
                 <a href="<?= e(base_url('login')) ?>">Entrar</a>
                 <a href="<?= e(base_url('register')) ?>" class="btn-primary text-xs px-4 py-2">Registro</a>
             <?php endif; ?>
+            <button type="button" class="btn-ghost nav-toggle md:hidden" data-nav-toggle aria-expanded="false" aria-label="Abrir menú">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
+    </div>
+    <div class="nav-mobile-panel" data-nav-panel>
+        <a href="<?= e(base_url('')) ?>#inicio">Inicio</a>
+        <a href="<?= e(base_url('menu')) ?>">Menú</a>
+        <a href="<?= e(base_url('')) ?>#nosotros">Nosotros</a>
+        <a href="<?= e(base_url('')) ?>#promociones">Promociones</a>
+        <a href="<?= e(base_url('')) ?>#ubicacion">Ubicación</a>
+        <?php if (!is_logged_in()): ?>
+        <a href="<?= e(base_url('login')) ?>">Entrar</a>
+        <a href="<?= e(base_url('register')) ?>" class="btn btn-primary btn-block mt-4">Crear cuenta</a>
+        <?php endif; ?>
     </div>
 </nav>
 
