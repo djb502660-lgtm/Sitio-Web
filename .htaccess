@@ -1,15 +1,23 @@
+<IfModule mod_negotiation.c>
+    Options -MultiViews -Indexes
+</IfModule>
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /Sitio-Web/
 
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
     # uploads: carpeta física o enlace simbólico en la raíz del proyecto
     RewriteRule ^uploads/(.*)$ cafeesquina/uploads/$1 [L]
 
-    # Archivos públicos reales (incluye /assets vía junction a cafeesquina/assets)
-    RewriteCond %{REQUEST_FILENAME} -f [OR]
-    RewriteCond %{REQUEST_FILENAME} -d
-    RewriteRule ^ - [L]
-
-    # Todo al front controller unificado
-    RewriteRule ^ index.php [L]
+    # Archivos públicos reales (incluye /assets)
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php [L]
 </IfModule>
+
+# Fallback para Apache en caso de que RewriteRule falle
+FallbackResource /Sitio-Web/index.php
