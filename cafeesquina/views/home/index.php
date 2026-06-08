@@ -1,5 +1,5 @@
 <?php
-$heroImg = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1600';
+$heroImg = upload_url('hero.jpg');
 $waGeneral = 'https://wa.me/' . preg_replace('/\D/', '', (string) app_config('whatsapp_number')) . '?text=' . rawurlencode('Hola CAFEESQUINA, quisiera hacer un pedido.');
 ?>
 <!-- Hero -->
